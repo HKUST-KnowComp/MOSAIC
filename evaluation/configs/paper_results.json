@@ -1,0 +1,301 @@
+{
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "output_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/paper_results",
+  "bootstrap_samples": 10000,
+  "seed": 64,
+  "_skip_groups_note": "E2 stage second-reader (MiMo + Gemini pilot) is enabled for gold + budgeted conditions. MiMo all_delivered/end_to_end omitted (timeouts / not run). E3 modality second-reader still skipped.",
+  "skip_group_reason": "E3 modality second-reader pilots not run; MiMo uncapped all_delivered excluded from aggregation",
+  "skip_groups": [
+    "modality_second_reader_mimo",
+    "modality_second_reader_gemini"
+  ],
+  "groups": {
+    "end_to_end": {
+      "population": "all",
+      "id_field": "question_id",
+      "expected_count": 923,
+      "runs": {
+        "rag_caption_text": {
+          "label": "Naive RAG / Caption-Text",
+          "system": "naive_rag",
+          "representation": "caption_text",
+          "reader": "deepseek-v4-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/caption_text/rag"
+        },
+        "rag_omni_text": {
+          "label": "Naive RAG / Omni-Text",
+          "system": "naive_rag",
+          "representation": "omni_text",
+          "reader": "deepseek-v4-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_text/rag"
+        },
+        "rag_native_mm_mimo": {
+          "label": "Naive RAG / Native-MM / MiMo",
+          "system": "naive_rag",
+          "representation": "native_mm",
+          "reader": "xiaomi/mimo-v2.5",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_mm_xiaomi/rag"
+        },
+        "rag_native_mm_gemini_3_5": {
+          "label": "Naive RAG / Native-MM / Gemini 3.5",
+          "system": "naive_rag",
+          "representation": "native_mm",
+          "reader": "gemini-3.5-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_mm_gemini_3_5/rag"
+        },
+        "react_caption_text": {
+          "label": "ReAct / Caption-Text",
+          "system": "react",
+          "representation": "caption_text",
+          "reader": "deepseek-v4-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/caption_text/react_adaptive"
+        },
+        "react_omni_text": {
+          "label": "ReAct / Omni-Text",
+          "system": "react",
+          "representation": "omni_text",
+          "reader": "deepseek-v4-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_text/react_adaptive"
+        },
+        "react_native_mm_mimo": {
+          "label": "ReAct / Native-MM / MiMo",
+          "system": "react",
+          "representation": "native_mm",
+          "reader": "xiaomi/mimo-v2.5",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_mm_xiaomi/react_adaptive"
+        },
+        "react_native_mm_gemini_3_5": {
+          "label": "ReAct / Native-MM / Gemini 3.5",
+          "system": "react",
+          "representation": "native_mm",
+          "reader": "gemini-3.5-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_mm_gemini_3_5/react_adaptive"
+        },
+        "amem_caption_text": {
+          "label": "A-MEM / Caption-Text",
+          "system": "a_mem",
+          "representation": "caption_text",
+          "reader": "deepseek-v4-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/caption_text/amem_native_end_to_end"
+        },
+        "amem_omni_text": {
+          "label": "A-MEM / Omni-Text",
+          "system": "a_mem",
+          "representation": "omni_text",
+          "reader": "deepseek-v4-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_text/amem_native_end_to_end"
+        },
+        "memoryos_caption_text": {
+          "label": "MemoryOS / Caption-Text",
+          "system": "memoryos",
+          "representation": "caption_text",
+          "reader": "deepseek-v4-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/caption_text/memoryos_native_end_to_end"
+        },
+        "memoryos_omni_text": {
+          "label": "MemoryOS / Omni-Text",
+          "system": "memoryos",
+          "representation": "omni_text",
+          "reader": "deepseek-v4-flash",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_text/memoryos_native_end_to_end"
+        }
+      }
+    },
+    "stage_decomposition": {
+      "population": "answerable",
+      "id_field": "question_id",
+      "expected_count": 784,
+      "runs": {
+        "gold_symbolic_facts": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/gold_symbolic_facts"
+        },
+        "gold_raw_evidence": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/gold_raw_evidence"
+        },
+        "gold_generic_text": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/gold_generic_text"
+        },
+        "gold_structured_text": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/gold_structured_text"
+        },
+        "retrieved_raw_all_delivered": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/retrieved_raw_all_delivered"
+        },
+        "retrieved_raw_budgeted": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/retrieved_raw_budgeted"
+        },
+        "end_to_end": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/end_to_end"
+        }
+      }
+    },
+    "stage_budget_sweep": {
+      "population": "answerable",
+      "id_field": "question_id",
+      "expected_count": 784,
+      "runs": {
+        "default_top20_media3": {
+          "expected_delivery_budget": {"production_top_k": 20, "max_images": 3, "max_audio": 3, "max_video": 3},
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/retrieved_raw_budgeted"
+        },
+        "top10_media3": {
+          "expected_delivery_budget": {"production_top_k": 10, "max_images": 3, "max_audio": 3, "max_video": 3},
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/budget_sweep/top10/retrieved_raw_budgeted"
+        },
+        "top5_media1": {
+          "expected_delivery_budget": {"production_top_k": 5, "max_images": 1, "max_audio": 1, "max_video": 1},
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/budget_sweep/top5_media1/retrieved_raw_budgeted"
+        }
+      }
+    },
+    "stage_second_reader_mimo": {
+      "_note": "MiMo-V2.5 is the answerability probe and runs as the SECOND reader (second_reader/ dirs); Gemini 3.5 is the primary reader whose pilot rows live under pilots/.",
+      "population": "manifest",
+      "expected_reader": "xiaomi/mimo-v2.5",
+      "qid_manifest": "evaluation/manifests/controlled_pilot_120.json",
+      "id_field": "question_id",
+      "expected_count": 120,
+      "runs": {
+        "gold_symbolic_facts": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/stage_decomposition/gold_symbolic_facts"},
+        "gold_raw_evidence": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/stage_decomposition/gold_raw_evidence"},
+        "gold_generic_text": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/stage_decomposition/gold_generic_text"},
+        "gold_structured_text": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/stage_decomposition/gold_structured_text"},
+        "retrieved_raw_budgeted": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/stage_decomposition/retrieved_raw_budgeted"}
+      }
+    },
+    "stage_second_reader_gemini": {
+      "_note": "Primary-reader (Gemini 3.5) rows on the pilot manifest, paired against the MiMo second-reader group above.",
+      "population": "manifest",
+      "expected_reader": "gemini-3.5-flash",
+      "qid_manifest": "evaluation/manifests/controlled_pilot_120.json",
+      "id_field": "question_id",
+      "expected_count": 120,
+      "runs": {
+        "gold_symbolic_facts": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/stage_decomposition/gold_symbolic_facts"},
+        "gold_raw_evidence": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/stage_decomposition/gold_raw_evidence"},
+        "gold_generic_text": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/stage_decomposition/gold_generic_text"},
+        "gold_structured_text": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/stage_decomposition/gold_structured_text"},
+        "retrieved_raw_all_delivered": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/stage_decomposition/retrieved_raw_all_delivered"},
+        "retrieved_raw_budgeted": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/stage_decomposition/retrieved_raw_budgeted"},
+        "end_to_end": {"result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/stage_decomposition/end_to_end"}
+      }
+    },
+    "modality_interventions": {
+      "population": "carrier_stratum",
+      "id_field": "intervention_id",
+      "runs": {
+        "image_raw": {
+          "compatibility_family": "image",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/image_raw"
+        },
+        "image_ocr_only": {
+          "compatibility_family": "image",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/image_ocr_only"
+        },
+        "image_object_only": {
+          "compatibility_family": "image",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/image_object_only"
+        },
+        "image_spatial_description": {
+          "compatibility_family": "image",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/image_spatial_description"
+        },
+        "video_raw": {
+          "compatibility_family": "video",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/video_raw"
+        },
+        "video_sparse_ordered_frames": {
+          "compatibility_family": "video",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/video_sparse_ordered_frames"
+        },
+        "video_shuffled_frames": {
+          "compatibility_family": "video",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/video_shuffled_frames"
+        },
+        "video_ordered_event_count_description": {
+          "compatibility_family": "video",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/video_ordered_event_count_description"
+        },
+        "audio_raw": {
+          "compatibility_family": "audio",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/audio_raw"
+        },
+        "audio_asr": {
+          "compatibility_family": "audio",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/audio_asr"
+        },
+        "audio_asr_prosody": {
+          "compatibility_family": "audio",
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/audio_asr_prosody"
+        }
+      }
+    },
+    "modality_second_reader_mimo": {
+      "_note": "MiMo-V2.5 second-reader intervention rows live under second_reader/; the primary Gemini pilot rows live under pilots/.",
+      "population": "carrier_stratum",
+      "expected_reader": "xiaomi/mimo-v2.5",
+      "id_field": "intervention_id",
+      "runs": {
+        "image_raw": {"compatibility_family": "image", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/image_raw"},
+        "image_ocr_only": {"compatibility_family": "image", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/image_ocr_only"},
+        "image_object_only": {"compatibility_family": "image", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/image_object_only"},
+        "image_spatial_description": {"compatibility_family": "image", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/image_spatial_description"},
+        "video_raw": {"compatibility_family": "video", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/video_raw"},
+        "video_sparse_ordered_frames": {"compatibility_family": "video", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/video_sparse_ordered_frames"},
+        "video_shuffled_frames": {"compatibility_family": "video", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/video_shuffled_frames"},
+        "video_ordered_event_count_description": {"compatibility_family": "video", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/video_ordered_event_count_description"},
+        "audio_raw": {"compatibility_family": "audio", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/audio_raw"},
+        "audio_asr": {"compatibility_family": "audio", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/audio_asr"},
+        "audio_asr_prosody": {"compatibility_family": "audio", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions/audio_asr_prosody"}
+      }
+    },
+    "modality_second_reader_gemini": {
+      "_note": "Primary-reader (Gemini 3.5) intervention rows on the pilot manifest, paired against the MiMo group above.",
+      "population": "carrier_stratum",
+      "expected_reader": "gemini-3.5-flash",
+      "id_field": "intervention_id",
+      "runs": {
+        "image_raw": {"compatibility_family": "image", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/image_raw"},
+        "image_ocr_only": {"compatibility_family": "image", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/image_ocr_only"},
+        "image_object_only": {"compatibility_family": "image", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/image_object_only"},
+        "image_spatial_description": {"compatibility_family": "image", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/image_spatial_description"},
+        "video_raw": {"compatibility_family": "video", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/video_raw"},
+        "video_sparse_ordered_frames": {"compatibility_family": "video", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/video_sparse_ordered_frames"},
+        "video_shuffled_frames": {"compatibility_family": "video", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/video_shuffled_frames"},
+        "video_ordered_event_count_description": {"compatibility_family": "video", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/video_ordered_event_count_description"},
+        "audio_raw": {"compatibility_family": "audio", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/audio_raw"},
+        "audio_asr": {"compatibility_family": "audio", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/audio_asr"},
+        "audio_asr_prosody": {"compatibility_family": "audio", "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/pilots/modality_interventions/audio_asr_prosody"}
+      }
+    },
+    "fixed_reader": {
+      "population": "answerable",
+      "id_field": "question_id",
+      "expected_count": 784,
+      "runs": {
+        "flat_rag_caption_text": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/fixed_reader/flat_rag_caption_text"
+        },
+        "flat_rag_omni_text": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/fixed_reader/flat_rag_omni_text"
+        },
+        "flat_rag_native_mm": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/fixed_reader/flat_rag_native_mm"
+        },
+        "amem_caption_text": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/fixed_reader/amem_caption_text"
+        },
+        "amem_omni_text": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/fixed_reader/amem_omni_text"
+        },
+        "memoryos_caption_text": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/fixed_reader/memoryos_caption_text"
+        },
+        "memoryos_omni_text": {
+          "result_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/fixed_reader/memoryos_omni_text"
+        }
+      }
+    }
+  }
+}

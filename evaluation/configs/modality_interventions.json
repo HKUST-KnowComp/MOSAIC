@@ -1,0 +1,56 @@
+{
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "generic_text_dir": "${MOSAIC_DATA_ROOT}/clean_output/textualized/llm_filtered",
+  "output_root": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions",
+  "swapped_tts_manifest": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/e7_opposite_tone_tts/tts_jobs.json",
+  "transformation_cache": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/transformation_cache.json",
+  "frame_cache": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/frame_cache",
+  "sparse_frame_count": 8,
+  "workers": 20,
+  "reader": {
+    "_note": "Primary fixed reader. Gemini 3.5 was never used in dataset construction, so the causal tables carry no probe-selection coupling; MiMo-V2.5 (the answerability probe) is the second reader on the pilot replication.",
+    "llm_model": "gemini-3.5-flash",
+    "base_url": "https://yunwu.ai/v1",
+    "api_key_env": "YUNWU_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "thinking_disabled": true,
+    "api_format": "gemini"
+  },
+  "intervention_writer": {
+    "llm_model": "xiaomi/mimo-v2.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "extra_body": {
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    "api_format": "openai"
+  },
+  "judge": {
+    "llm_model": "qwen/qwen3.7-plus",
+    "config": "evaluation/judge/config_judge.json"
+  }
+}

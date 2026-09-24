@@ -1,0 +1,22 @@
+{
+  "_note": "Secondary panel judge (Grok-4.5, no thinking). Used only for cross-judge agreement on Track B runs; the binding score comes from the primary Qwen3.7-Plus judge. Output to <run_dir>/judge_grok_4_5.",
+
+  "input": null,
+  "output_dir": null,
+
+  "judge_workers": 200,
+
+  "judge": {
+    "llm_model": "x-ai/grok-4.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "thinking_disabled": true
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

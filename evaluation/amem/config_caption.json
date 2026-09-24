@@ -1,0 +1,25 @@
+{
+  "data_dir": "${MOSAIC_DATA_ROOT}/clean_output/textualized/llm_filtered/",
+  "index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/amem/caption_index/",
+  "output_dir":"${MOSAIC_DATA_ROOT}/evaluation_results/amem/caption_output/",
+  "max_personas": null,
+  "build_workers": 70,
+  "seed": 64,
+
+  "amem_config": {
+    "model_name": "all-MiniLM-L6-v2",
+    "embedding_device": "cuda:0",
+    "llm_backend": "openai",
+    "llm_model": "deepseek-v4-flash",
+    "base_url": "https://api.deepseek.com",
+    "thinking_disabled": true,
+    "evo_threshold": 999999,
+    "evolution_enabled": true,
+    "api_key_env": "DEEPSEEK_API_KEY"
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "_note": "Second-reader replication of the modality interventions. Identical to modality_interventions.json except the reader block (MiMo-V2.5 instead of the primary Gemini 3.5) and the output root. MiMo-V2.5 is the dataset answerability probe, so its rows quantify the probe-selection bias. The transformation and frame caches are shared with the canonical Gemini run so both readers see byte-identical intervened evidence; the intervention writer stays MiMo-V2.5 in both configs. Run only with --qid-manifest evaluation/manifests/controlled_pilot_120.json.",
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "generic_text_dir": "${MOSAIC_DATA_ROOT}/clean_output/textualized/llm_filtered",
+  "output_root": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/modality_interventions",
+  "transformation_cache": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/transformation_cache.json",
+  "frame_cache": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/modality_interventions/frame_cache",
+  "sparse_frame_count": 8,
+  "workers": 20,
+  "reader": {
+    "llm_model": "xiaomi/mimo-v2.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "extra_body": {
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    "api_format": "openai"
+  },
+  "intervention_writer": {
+    "llm_model": "xiaomi/mimo-v2.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "extra_body": {
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    "api_format": "openai"
+  },
+  "judge": {
+    "llm_model": "qwen/qwen3.7-plus",
+    "config": "evaluation/judge/config_judge.json"
+  }
+}

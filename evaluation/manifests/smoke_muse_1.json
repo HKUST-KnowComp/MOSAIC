@@ -1,0 +1,8 @@
+{
+  "manifest_version": 1,
+  "purpose": "1-item smoke test for Muse Spark 1.1 second-reader wiring",
+  "num_items": 1,
+  "question_ids": [
+    "mm_information_extraction_0083bb89_001"
+  ]
+}

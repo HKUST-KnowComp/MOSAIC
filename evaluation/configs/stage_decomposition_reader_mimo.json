@@ -1,0 +1,78 @@
+{
+  "_note": "Second-reader replication of the stage decomposition. Identical to stage_decomposition.json except the reader block (MiMo-V2.5 instead of the primary Gemini 3.5) and the output root. MiMo-V2.5 is the dataset answerability probe, so its rows quantify the probe-selection bias rather than serving as unbiased estimates; compare its probe-pass versus human-rescued strata against the primary reader. The retrieval manifest and structured-writer cache are shared with the canonical Gemini run so every condition replays identical evidence. Run only with --qid-manifest evaluation/manifests/controlled_pilot_120.json.",
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "generic_text_dir": "${MOSAIC_DATA_ROOT}/clean_output/textualized/llm_filtered",
+  "native_index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_omni_mm",
+  "output_root": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader/stage_decomposition",
+  "retrieval_manifest": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/retrieval_manifest_top50.json",
+  "production_query_manifest": "evaluation/manifests/fixed_rewrite_queries.json",
+  "structured_cache": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/structured_writer_cache.json",
+  "retrieval_top_k": 50,
+  "production_top_k": 20,
+  "workers": 20,
+  "embedding": {
+    "model_name": "jinaai/jina-embeddings-v5-omni-small",
+    "device": "cuda:4"
+  },
+  "production_delivery": {
+    "max_images": 3,
+    "max_audio": 3,
+    "max_video": 3,
+    "max_media_size_mb": 100,
+    "supported_modalities": ["text", "image", "audio", "video"],
+    "attach_media": true
+  },
+  "provider_delivery_caps": {
+    "_note": "Hard provider API limits for all_retrieved_delivered conditions. Kept aligned with primary stage_decomposition.json (Gemini ≤10 videos/request).",
+    "max_video": 10
+  },
+  "reader": {
+    "llm_model": "xiaomi/mimo-v2.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "extra_body": {
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    "api_format": "openai"
+  },
+  "structured_writer": {
+    "llm_model": "xiaomi/mimo-v2.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "extra_body": {
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    "api_format": "openai"
+  },
+  "judge": {
+    "llm_model": "qwen/qwen3.7-plus",
+    "config": "evaluation/judge/config_judge.json"
+  }
+}

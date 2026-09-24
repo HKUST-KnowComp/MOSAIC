@@ -1,0 +1,48 @@
+{
+  "index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_caption_text/",
+  "output_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/eval_caption_text/",
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "max_personas": null,
+  "query_workers": 100,
+  "seed": 64,
+
+  "_index_note": "Change index_dir to index_omni_text/ to evaluate Omni→Text instead of Caption→Text.",
+
+  "embedding": {
+    "model_name": "Qwen/Qwen3-Embedding-0.6B",
+    "device": "cuda:0",
+    "model_kwargs": {
+      "attn_implementation": "flash_attention_2",
+      "torch_dtype": "bfloat16"
+    },
+    "processor_kwargs": {
+      "padding_side": "left"
+    }
+  },
+
+  "retrieval": {
+    "top_k": 20,
+    "enable_time_filter": false,
+    "query_policy": "fixed_rewrite",
+    "query_manifest": "evaluation/manifests/fixed_rewrite_queries.json",
+    "score_threshold": 0.0,
+    "_query_rewrite_note": "Set to true to extract keywords from the question before embedding. Uses reasoner by default; set rewrite_reasoner to use a different LLM."
+  },
+
+  "reasoner": {
+    "llm_model": "deepseek-v4-flash",
+    "base_url": "https://api.deepseek.com",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "timeout": {"connect": 30, "read": 180, "write": 180, "pool": 30},
+    "temperature": 0.0,
+    "max_tokens": 100000,
+    "thinking_disabled": true,
+    "extra_body": {"thinking": {"type": "disabled"}}
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

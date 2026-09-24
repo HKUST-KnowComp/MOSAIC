@@ -1,0 +1,188 @@
+{
+  "_description": "W5 revised: QID-level video MDE; privileged negative-control vs observable refusal surface tests.",
+  "mde_method": "MDE=(z_{1-\u03b1/2}+z_{1-\u03b2})*sd(delta)/sqrt(n) with \u03b1=0.05 two-sided, 80% power, paired judge-score deltas. Primary unit = unique QID (average deltas when a QID has multiple interventions). Intervention unit reported for comparison with case-level tables.",
+  "video_mde": [
+    {
+      "label": "ordered_minus_shuffled",
+      "paper_row": "Ordered \u2212 shuffled (action_ordering)",
+      "left": "video_sparse_ordered_frames",
+      "right": "video_shuffled_frames",
+      "challenge": "action_ordering",
+      "intervention_unit": {
+        "n": 67,
+        "mean_delta": -0.014925,
+        "sd_delta": 0.256582,
+        "se_delta": 0.031347,
+        "mde_80_power_alpha05": 0.08782,
+        "mde_points": 8.8
+      },
+      "qid_unit": {
+        "n": 64,
+        "mean_delta": -0.009375,
+        "sd_delta": 0.255087,
+        "se_delta": 0.031886,
+        "mde_80_power_alpha05": 0.089331,
+        "mde_points": 8.9
+      }
+    },
+    {
+      "label": "event_minus_sparse_repetition",
+      "paper_row": "Event \u2212 frames (repetition)",
+      "left": "video_ordered_event_count_description",
+      "right": "video_sparse_ordered_frames",
+      "challenge": "repetition_count",
+      "intervention_unit": {
+        "n": 64,
+        "mean_delta": 0.014062,
+        "sd_delta": 0.269548,
+        "se_delta": 0.033694,
+        "mde_80_power_alpha05": 0.094395,
+        "mde_points": 9.4
+      },
+      "qid_unit": {
+        "n": 56,
+        "mean_delta": 0.016071,
+        "sd_delta": 0.288429,
+        "se_delta": 0.038543,
+        "mde_80_power_alpha05": 0.107982,
+        "mde_points": 10.8
+      }
+    },
+    {
+      "label": "event_minus_sparse_transition",
+      "paper_row": "Event \u2212 frames (transition)",
+      "left": "video_ordered_event_count_description",
+      "right": "video_sparse_ordered_frames",
+      "challenge": "state_transition",
+      "intervention_unit": {
+        "n": 64,
+        "mean_delta": 0.026563,
+        "sd_delta": 0.320338,
+        "se_delta": 0.040042,
+        "mde_80_power_alpha05": 0.112182,
+        "mde_points": 11.2
+      },
+      "qid_unit": {
+        "n": 64,
+        "mean_delta": 0.026563,
+        "sd_delta": 0.320338,
+        "se_delta": 0.040042,
+        "mde_80_power_alpha05": 0.112182,
+        "mde_points": 11.2
+      }
+    }
+  ],
+  "video_mde_qid_summary_points": {
+    "values": [
+      8.9,
+      10.8,
+      11.2
+    ],
+    "n_qids": [
+      64,
+      56,
+      64
+    ],
+    "min": 8.9,
+    "max": 11.2
+  },
+  "refusal_diagnostics": {
+    "privileged_fields": [
+      "n_required_hops",
+      "n_answer_sessions",
+      "question_type_label"
+    ],
+    "privileged_note": "Construction/gold metadata. question_type=answer_refusal is a perfect label; hops/answer_sessions are zero after evidence strip. Never expose these in evaluation inputs.",
+    "ar_vs_all_answerable": {
+      "n": 923,
+      "n_answerable": 784,
+      "n_refusal": 139,
+      "question_tfidf": {
+        "auc": 0.8498017912200853,
+        "ci95": [
+          0.8201052188397825,
+          0.8753651074453044
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      },
+      "structure_counts": {
+        "auc": 0.7493851857289678,
+        "ci95": [
+          0.7039465560667447,
+          0.7894337484910255
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      },
+      "tfidf_plus_structure": {
+        "auc": 0.8725682719130817,
+        "ci95": [
+          0.8428788620782625,
+          0.8990023704396661
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      },
+      "haystack_sessions_only": {
+        "auc": 0.5184306636323593,
+        "ci95": [
+          0.4724398014259935,
+          0.5642753047163742
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      },
+      "privileged_hops_answer_sessions": {
+        "auc": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      }
+    },
+    "ar_vs_ie_only": {
+      "n": 317,
+      "n_answerable": 178,
+      "n_refusal": 139,
+      "question_tfidf": {
+        "auc": 0.6624363430603832,
+        "ci95": [
+          0.6035290306758058,
+          0.7185908744194323
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      },
+      "structure_counts": {
+        "auc": 0.6859590978902272,
+        "ci95": [
+          0.6244000361258861,
+          0.7487021892967922
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      },
+      "tfidf_plus_structure": {
+        "auc": 0.7247999353326328,
+        "ci95": [
+          0.667085963103777,
+          0.7814017687198146
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      },
+      "haystack_sessions_only": {
+        "auc": 0.5944951903645623,
+        "ci95": [
+          0.5296814882430888,
+          0.6585807614364104
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      },
+      "privileged_hops_answer_sessions": {
+        "auc": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "cv": "StratifiedGroupKFold_persona"
+      }
+    },
+    "interpretation": "Haystack length is matched (AUROC~0.52 vs all). Privileged construction fields achieve AUROC 1.0 by definition. Question TF-IDF remains partially predictive (AUROC~0.85 vs all; ~0.66 vs IE-only). Do not claim absence of all surface cues."
+  }
+}

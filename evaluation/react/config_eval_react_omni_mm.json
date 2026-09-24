@@ -1,0 +1,83 @@
+{
+  "index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_omni_mm/",
+  "output_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/react_omni_mm_xiaomi/",
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "react_mode": "adaptive_react",
+  "execution_track": "native_end_to_end",
+  "parity_baseline_config": "evaluation/rag/config_eval_omni_mm_xiaomi.json",
+  "max_personas": null,
+  "query_workers": 100,
+  "seed": 64,
+
+  "_note": "Omni-MM ReAct: BOTH reasoners must be VL models because _build_multimodal_observation() attaches actual media files to every intermediate search result. A text-only LLM can't see them. Use the same model unless you want a cheaper VL for the loop and a better one for the final answer.",
+
+  "embedding": {
+    "model_name": "jinaai/jina-embeddings-v5-omni-small",
+    "device": "cuda:0"
+  },
+
+  "react": {
+    "max_iterations": 5,
+    "search_top_k": 20,
+    "enable_time_filter": false,
+    "query_rewrite": false,
+    "tool_query_rewrite": false,
+    "query_policy": "fixed_rewrite",
+    "query_manifest": "evaluation/manifests/fixed_rewrite_queries.json",
+    "score_threshold": 0.0,
+    "candidate_k": 20,
+    "delivery_mode": "production_budget",
+    "reject_duplicate_queries": true,
+    "max_media_size_mb": 20,
+    "max_images_per_obs": 3,
+    "max_audio_per_obs": 3,
+    "max_video_per_obs": 3,
+    "rewrite_reasoner": {
+      "_comment": "Cheap text LLM for query rewriting. VL models don't handle keyword extraction well, so use a text model here.",
+      "llm_model": "deepseek-v4-flash",
+      "base_url": "https://api.deepseek.com",
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "temperature": 0.0,
+      "max_tokens": 16384,
+      "thinking_disabled": true,
+      "extra_body": {"thinking": {"type": "disabled"}}
+    },
+    "_note": "Primary adaptive mode receives the original question and embeds agent tool queries unchanged. query_policy/query_manifest are used only by one_search_parity."
+  },
+
+  "react_reasoner": {
+    "_comment": "VL model for ReAct loop — must be multimodal because each SEARCH observation includes attached images/audio/video. Same model as answer_reasoner by default.",
+    "llm_model": "xiaomi/mimo-v2.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {"connect": 30, "read": 90, "write": 90, "pool": 30},
+    "max_retries": 2,
+    "retry_backoff": 1.5,
+    "temperature": 0.0,
+    "max_tokens": 16384,
+    "extra_body": {},
+    "api_format": "openai",
+    "_api_format_note": "Set to 'gemini' when using a Gemini model/proxy. max_tokens=4096 — SEARCH/ANSWER + reasoning fits in this; 1M tokens causes OpenRouter to silently cap and truncate. Short timeouts/retries: MiMo hangs otherwise (was 300s×5)."
+  },
+
+  "answer_reasoner": {
+    "_comment": "VL model for final answer — same as react_reasoner. Separate key lets you use a stronger/weaker VL for the final call if desired.",
+    "llm_model": "xiaomi/mimo-v2.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {"connect": 30, "read": 90, "write": 90, "pool": 30},
+    "max_retries": 2,
+    "retry_backoff": 1.5,
+    "temperature": 0.0,
+    "max_tokens": 16384,
+    "extra_body": {},
+    "api_format": "openai",
+    "_api_format_note": "Set to 'gemini' when using a Gemini model/proxy. Sends video as image_url instead of video_url. Short timeouts/retries: MiMo hangs otherwise (was 300s×5)."
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

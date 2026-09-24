@@ -1,0 +1,25 @@
+{
+  "data_dir": "${MOSAIC_DATA_ROOT}/clean_output/stage2/llm_filtered/",
+  "index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_omni_mm/",
+  "persona_file_glob": "stage2_with_media_*.json",
+  "max_personas": null,
+  "build_workers": 1,
+  "seed": 64,
+
+  "embedding": {
+    "model_name": "jinaai/jina-embeddings-v5-omni-small",
+    "device": "cuda:0",
+    "batch_size": 256,
+    "_note": "jina-embeddings-v5-omni-small: 1.74B params, 1024-dim, supports text/image/video/audio. Uses encode_query()/encode_document() for retrieval."
+  },
+
+  "index": {
+    "type": "flat",
+    "_dimension_note": "jina-embeddings-v5-omni-small output dimension is 1024"
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

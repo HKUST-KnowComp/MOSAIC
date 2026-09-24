@@ -1,0 +1,104 @@
+{
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "output_root": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/fixed_reader",
+  "top_k": 20,
+  "workers": 20,
+  "delivery": {
+    "max_images": 3,
+    "max_audio": 3,
+    "max_video": 3,
+    "max_media_size_mb": 100,
+    "max_context_chars": null,
+    "supported_modalities": ["text", "image", "audio", "video"],
+    "attach_media": true
+  },
+  "reader": {
+    "_note": "Common fixed reader for Track A. Gemini 3.5 was never used in dataset construction, so backend comparisons carry no probe-selection coupling.",
+    "llm_model": "gemini-3.5-flash",
+    "base_url": "https://yunwu.ai/v1",
+    "api_key_env": "YUNWU_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "thinking_disabled": true,
+    "api_format": "gemini"
+  },
+  "sources": {
+    "flat_rag_caption_text": {
+      "memory_system": "flat_rag",
+      "memory_organization": "flat_index",
+      "representation": "caption_text",
+      "retriever": "Qwen/Qwen3-Embedding-0.6B",
+      "chunk_unit": "session",
+      "details_path": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/caption_text/rag/details.jsonl",
+      "observability": {"write_provenance": true, "retrieval_ranks": true}
+    },
+    "flat_rag_omni_text": {
+      "memory_system": "flat_rag",
+      "memory_organization": "flat_index",
+      "representation": "omni_text",
+      "retriever": "Qwen/Qwen3-Embedding-0.6B",
+      "chunk_unit": "session",
+      "details_path": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_text/rag/details.jsonl",
+      "observability": {"write_provenance": true, "retrieval_ranks": true}
+    },
+    "flat_rag_native_mm": {
+      "memory_system": "flat_rag",
+      "memory_organization": "flat_index",
+      "representation": "native_mm",
+      "retriever": "jinaai/jina-embeddings-v5-omni-small",
+      "chunk_unit": "session_and_media_carrier",
+      "details_path": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_mm_xiaomi/rag/details.jsonl",
+      "observability": {"write_provenance": true, "retrieval_ranks": true}
+    },
+    "amem_caption_text": {
+      "memory_system": "a_mem",
+      "memory_organization": "evolving_notes",
+      "representation": "caption_text",
+      "retriever": "A-MEM search_agentic",
+      "chunk_unit": "memory_note",
+      "details_path": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/caption_text/amem_native_end_to_end/details.jsonl",
+      "observability": {"write_provenance": true, "retrieval_ranks": true}
+    },
+    "amem_omni_text": {
+      "memory_system": "a_mem",
+      "memory_organization": "evolving_notes",
+      "representation": "omni_text",
+      "retriever": "A-MEM search_agentic",
+      "chunk_unit": "memory_note",
+      "details_path": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_text/amem_native_end_to_end/details.jsonl",
+      "observability": {"write_provenance": true, "retrieval_ranks": true}
+    },
+    "memoryos_caption_text": {
+      "memory_system": "memoryos",
+      "memory_organization": "text_hierarchical",
+      "representation": "caption_text",
+      "retriever": "MemoryOS retrieve_context",
+      "chunk_unit": "memory_page_knowledge_profile",
+      "details_path": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/caption_text/memoryos_native_end_to_end/details.jsonl",
+      "observability": {"write_provenance": false, "retrieval_ranks": true}
+    },
+    "memoryos_omni_text": {
+      "memory_system": "memoryos",
+      "memory_organization": "text_hierarchical",
+      "representation": "omni_text",
+      "retriever": "MemoryOS retrieve_context",
+      "chunk_unit": "memory_page_knowledge_profile",
+      "details_path": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/omni_text/memoryos_native_end_to_end/details.jsonl",
+      "observability": {"write_provenance": false, "retrieval_ranks": true}
+    }
+  },
+  "judge": {
+    "llm_model": "qwen/qwen3.7-plus",
+    "config": "evaluation/judge/config_judge.json"
+  }
+}

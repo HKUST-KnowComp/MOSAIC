@@ -1,0 +1,44 @@
+{
+  "_note": "=== MemoryOS + MOSAIC Evaluation Config ===",
+  "_api_key_options": "Set api_key directly (takes priority), OR leave empty and set env var named in openai_api_key_env.",
+  "_workers_note": "Phase 1 builds memories (ingest_workers parallel). Phase 2 evaluates questions (eval_workers parallel).",
+
+  "data_dir": "${MOSAIC_DATA_ROOT}/clean_output/omni_textualized/xiaomi_mimo-v2.5_omni_textualized/",
+  "output_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/memoryos_omni/results/",
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "persona_file_glob": "stage_2_text_based_*.json",
+
+  "ingest_workers": 1000,
+  "eval_workers": 50,
+
+  "api_key_env": "DEEPSEEK_API_KEY",
+
+  "memoryos": {
+    "data_storage_path": "${MOSAIC_DATA_ROOT}/evaluation_results/memoryos_omni/",
+    "llm_model": "deepseek-v4-flash",
+    "openai_base_url": "https://api.deepseek.com",
+    "embedding_model_name": "Qwen/Qwen3-Embedding-0.6B",
+    "embedding_model_kwargs": { "device": "cuda:0" },
+    "updater_batch_size": 10,
+    "short_term_capacity": 20,
+    "mid_term_capacity": 5000,
+    "mid_term_similarity_threshold": 0.65,
+    "mid_term_heat_threshold": 10.0,
+    "extra_body": { "thinking": { "type": "disabled" }, "reasoning": {"effort": "none" }}
+  },
+
+  "retrieval": {
+    "segment_similarity_threshold": 0.1,
+    "page_similarity_threshold": 0.1,
+    "knowledge_threshold": 0.01,
+    "top_k_sessions": 5,
+    "top_k_knowledge": 20
+  },
+
+  "llm": {
+    "eval_model": "deepseek-v4-flash",
+    "temperature": 0.0,
+    "max_tokens": 65536
+  }
+}

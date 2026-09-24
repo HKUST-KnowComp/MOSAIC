@@ -1,0 +1,85 @@
+{
+  "index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_caption_text/",
+  "output_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/react_caption_text/",
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "react_mode": "adaptive_react",
+  "execution_track": "native_end_to_end",
+  "parity_baseline_config": "evaluation/rag/config_eval_caption_text_deepseekv4flash.json",
+  "max_personas": null,
+  "query_workers": 10,
+  "seed": 64,
+
+  "_notes": {
+    "caption_text": "For Caption→Text / Omni→Text: react_reasoner and answer_reasoner can be the same text LLM.",
+    "omni_mm": "For Omni-MM: react_reasoner = text LLM (search results are text), answer_reasoner = omni VL model (sees attached media). Update embedding to jina model."
+  },
+
+  "embedding": {
+    "model_name": "Qwen/Qwen3-Embedding-0.6B",
+    "device": "cuda:0",
+    "model_kwargs": {
+      "attn_implementation": "flash_attention_2",
+      "torch_dtype": "bfloat16"
+    },
+    "processor_kwargs": {
+      "padding_side": "left"
+    }
+  },
+
+  "react": {
+    "max_iterations": 5,
+    "search_top_k": 20,
+    "enable_time_filter": false,
+    "query_rewrite": false,
+    "tool_query_rewrite": false,
+    "query_policy": "fixed_rewrite",
+    "query_manifest": "evaluation/manifests/fixed_rewrite_queries.json",
+    "score_threshold": 0.0,
+    "candidate_k": 20,
+    "delivery_mode": "production_budget",
+    "observation_max_results": null,
+    "observation_max_chars": null,
+    "reject_duplicate_queries": true,
+    "max_images_per_obs": 3,
+    "max_audio_per_obs": 2,
+    "max_video_per_obs": 1,
+    "max_media_size_mb": 20,
+    "_enable_time_filter_note": "Set to false — benchmark co-generates sessions and questions, so question_date doesn't reliably precede evidence timestamps."
+  },
+
+  "react_reasoner": {
+    "_comment": "LLM that decides what to search and when to answer (intermediate reasoning). For text indexes this can be the same as answer_reasoner.",
+    "llm_model": "deepseek-v4-flash",
+    "base_url": "https://api.deepseek.com",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "timeout": {"connect": 30, "read": 180, "write": 180, "pool": 30},
+    "max_retries": 2,
+    "retry_backoff": 2.0,
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "thinking_disabled": true,
+    "api_format": "openai",
+    "_api_format_note": "Set to 'gemini' when using a Gemini model/proxy (ReAct-MM only). Sends video as image_url instead of video_url."
+  },
+
+  "answer_reasoner": {
+    "_comment": "LLM for the final answer. For Omni-MM, use an omni/VL model here (e.g. xiaomi/mimo).",
+    "llm_model": "deepseek-v4-flash",
+    "base_url": "https://api.deepseek.com",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "timeout": {"connect": 30, "read": 180, "write": 180, "pool": 30},
+    "max_retries": 2,
+    "retry_backoff": 2.0,
+    "temperature": 0.0,
+    "max_tokens": 512,
+    "thinking_disabled": true,
+    "api_format": "openai",
+    "_api_format_note": "Set to 'gemini' when using a Gemini model/proxy (ReAct-MM only). Controls video content type in the final answer call."
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

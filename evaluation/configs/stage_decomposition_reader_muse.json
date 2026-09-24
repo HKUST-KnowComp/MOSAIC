@@ -1,0 +1,78 @@
+{
+  "_note": "Smoke / second-reader config: Muse Spark 1.1 via OpenRouter. Identical to stage_decomposition_reader_mimo.json except reader model and output root. Use with --qid-manifest evaluation/manifests/smoke_muse_1.json (1 item) or controlled_pilot_120.json.",
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "generic_text_dir": "${MOSAIC_DATA_ROOT}/clean_output/textualized/llm_filtered",
+  "native_index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_omni_mm",
+  "output_root": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/second_reader_muse/stage_decomposition",
+  "retrieval_manifest": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/retrieval_manifest_top50.json",
+  "production_query_manifest": "evaluation/manifests/fixed_rewrite_queries.json",
+  "structured_cache": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/structured_writer_cache.json",
+  "retrieval_top_k": 50,
+  "production_top_k": 20,
+  "workers": 1,
+  "embedding": {
+    "model_name": "jinaai/jina-embeddings-v5-omni-small",
+    "device": "cuda:4"
+  },
+  "production_delivery": {
+    "max_images": 3,
+    "max_audio": 3,
+    "max_video": 3,
+    "max_media_size_mb": 100,
+    "supported_modalities": ["text", "image", "audio", "video"],
+    "attach_media": true
+  },
+  "provider_delivery_caps": {
+    "_note": "Conservative caps for Muse Spark smoke / pilot.",
+    "max_video": 10
+  },
+  "reader": {
+    "llm_model": "meta/muse-spark-1.1",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "extra_body": {
+      "reasoning": {
+        "effort": "low"
+      }
+    },
+    "api_format": "openai"
+  },
+  "structured_writer": {
+    "llm_model": "xiaomi/mimo-v2.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "extra_body": {
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    "api_format": "openai"
+  },
+  "judge": {
+    "llm_model": "qwen/qwen3.7-plus",
+    "config": "evaluation/judge/config_judge.json"
+  }
+}

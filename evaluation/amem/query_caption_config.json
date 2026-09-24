@@ -1,0 +1,36 @@
+{
+  "index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/amem/caption_index/",
+  "output_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/amem/query_caption_results/",
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "max_personas": null,
+  "query_workers": 100,
+  "k_values": [1, 3, 5, 10, 20],
+
+  "amem_config": {
+    "model_name": "all-MiniLM-L6-v2",
+    "embedding_device": "cuda:0",
+    "llm_backend": "openai",
+    "llm_model": "gpt-4o-mini",
+    "evo_threshold": 100,
+    "evolution_enabled": false,
+    "api_key_env": "OPENAI_API_KEY"
+  },
+
+  "qa_evaluation": {
+    "enabled": true,
+    "llm_config": {
+      "llm_model": "deepseek-v4-flash",
+      "temperature": 0.3,
+      "max_tokens": 1024,
+      "base_url": "https://api.deepseek.com",
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "thinking_disabled": true
+    }
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

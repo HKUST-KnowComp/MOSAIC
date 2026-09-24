@@ -1,0 +1,75 @@
+{
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "generic_text_dir": "${MOSAIC_DATA_ROOT}/clean_output/textualized/llm_filtered",
+  "native_index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_omni_mm",
+  "production_query_manifest": "evaluation/manifests/fixed_rewrite_queries.json",
+  "output_root": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition",
+  "retrieval_manifest": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/retrieval_manifest_top50.json",
+  "production_query_manifest": "evaluation/manifests/fixed_rewrite_queries.json",
+  "structured_cache": "${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1/stage_decomposition/structured_writer_cache.json",
+  "retrieval_top_k": 50,
+  "production_top_k": 20,
+  "workers": 20,
+  "embedding": {
+    "model_name": "jinaai/jina-embeddings-v5-omni-small",
+    "device": "cuda:0"
+  },
+  "production_delivery": {
+    "max_images": 3,
+    "max_audio": 3,
+    "max_video": 3,
+    "max_media_size_mb": 100,
+    "supported_modalities": ["text", "image", "audio", "video"],
+    "attach_media": true
+  },
+  "provider_delivery_caps": {
+    "_note": "Hard provider API limits applied even for gold_raw_evidence / retrieved_raw_all_delivered (mode stays all_retrieved_delivered). Gemini Flash rejects requests with >10 videos. Distinct from production_delivery budget used by retrieved_raw_budgeted / end_to_end.",
+    "max_video": 10
+  },
+  "reader": {
+    "_note": "Primary fixed reader. Gemini 3.5 was never used in dataset construction, so the causal tables carry no probe-selection coupling; MiMo-V2.5 (the answerability probe) is the second reader on the pilot replication.",
+    "llm_model": "gemini-3.5-flash",
+    "base_url": "https://yunwu.ai/v1",
+    "api_key_env": "YUNWU_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 1024,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "thinking_disabled": true,
+    "api_format": "gemini"
+  },
+  "structured_writer": {
+    "llm_model": "xiaomi/mimo-v2.5",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "timeout": {
+      "default": 300,
+      "connect": 30,
+      "read": 300,
+      "write": 300,
+      "pool": 30
+    },
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "max_attempts": 3,
+    "retry_backoff": 2.0,
+    "extra_body": {
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    "api_format": "openai"
+  },
+  "judge": {
+    "llm_model": "qwen/qwen3.7-plus",
+    "config": "evaluation/judge/config_judge.json"
+  }
+}

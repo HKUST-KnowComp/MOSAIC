@@ -1,0 +1,32 @@
+{
+  "data_dir": "${MOSAIC_DATA_ROOT}/clean_output/textualized/llm_filtered/",
+  "index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_caption_text/",
+  "persona_file_glob": "stage_2_text_based_*.json",
+  "max_personas": null,
+  "build_workers": 1,
+  "seed": 64,
+
+  "embedding": {
+    "model_name": "Qwen/Qwen3-Embedding-0.6B",
+    "device": "cuda:0",
+    "batch_size": 64,
+    "model_kwargs": {
+      "attn_implementation": "flash_attention_2",
+      "torch_dtype": "bfloat16"
+    },
+    "processor_kwargs": {
+      "padding_side": "left"
+    },
+    "_note": "Dimension: 1024 (auto-detected). Qwen3-Embedding supports user-defined output dims 32-1024."
+  },
+
+  "index": {
+    "type": "flat",
+    "_note": "IndexFlatIP for inner-product search. Normalized vectors = cosine similarity."
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_omni_mm/",
+  "output_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/react_omni_mm_gemini/",
+  "canonical_data_dir": "${MOSAIC_DATA_ROOT}/human_filtered_evaluation_results/dataset/stage2_human_filtered",
+  "canonical_qid_manifest": "evaluation/manifests/canonical_qids.json",
+  "react_mode": "adaptive_react",
+  "execution_track": "native_end_to_end",
+  "parity_baseline_config": "evaluation/rag/config_eval_omni_mm_gemini.json",
+  "max_personas": null,
+  "query_workers": 8,
+  "seed": 64,
+
+  "_note": "Omni-MM ReAct with Gemini: BOTH reasoners use gemini-3.1-flash-lite because _build_multimodal_observation() attaches actual media files to every intermediate SEARCH observation. api_format='gemini' sends video as image_url (Gemini treats all media as inline_data).",
+
+  "embedding": {
+    "model_name": "jinaai/jina-embeddings-v5-omni-small",
+    "device": "cuda:0"
+  },
+
+  "react": {
+    "max_iterations": 5,
+    "search_top_k": 20,
+    "enable_time_filter": false,
+    "query_rewrite": false,
+    "tool_query_rewrite": false,
+    "query_policy": "fixed_rewrite",
+    "query_manifest": "evaluation/manifests/fixed_rewrite_queries.json",
+    "score_threshold": 0.0,
+    "candidate_k": 20,
+    "delivery_mode": "production_budget",
+    "reject_duplicate_queries": true,
+    "max_media_size_mb": 20,
+    "max_images_per_obs": 3,
+    "max_audio_per_obs": 2,
+    "max_video_per_obs": 1,
+    "rewrite_reasoner": {
+      "_comment": "Cheap text LLM for query rewriting. VL models don't handle keyword extraction well, so use a text model here.",
+      "llm_model": "deepseek-v4-flash",
+      "base_url": "https://api.deepseek.com",
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "temperature": 0.0,
+      "max_tokens": 100,
+      "thinking_disabled": true,
+      "extra_body": {"thinking": {"type": "disabled"}}
+    },
+    "_note": "Primary adaptive mode receives the original question and embeds agent tool queries unchanged. query_policy/query_manifest are used only by one_search_parity."
+  },
+
+  "react_reasoner": {
+    "_comment": "Gemini VL model for ReAct loop — sees images/audio/video in each SEARCH observation.",
+    "llm_model": "gemini-3.1-flash-lite",
+    "base_url": "https://yunwu.ai/v1",
+    "api_key_env": "YUNWU_API_KEY",
+    "timeout": {"connect": 30, "read": 300, "write": 300, "pool": 30},
+    "max_retries": 2,
+    "retry_backoff": 2.0,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "api_format": "gemini",
+    "_api_format_note": "Gemini treats all media as inline_data — image_url works for images, video, and audio."
+  },
+
+  "answer_reasoner": {
+    "_comment": "Same Gemini VL model for the final answer with all accumulated media.",
+    "llm_model": "gemini-3.1-flash-lite",
+    "base_url": "https://yunwu.ai/v1",
+    "api_key_env": "YUNWU_API_KEY",
+    "timeout": {"connect": 30, "read": 300, "write": 300, "pool": 30},
+    "max_retries": 2,
+    "retry_backoff": 2.0,
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "api_format": "gemini",
+    "_api_format_note": "Gemini treats all media as inline_data — image_url works for images, video, and audio."
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

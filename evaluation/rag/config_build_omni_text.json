@@ -1,0 +1,30 @@
+{
+  "data_dir": "${MOSAIC_DATA_ROOT}/clean_output/omni_textualized/xiaomi_mimo-v2.5_omni_textualized/",
+  "index_dir": "${MOSAIC_DATA_ROOT}/evaluation_results/index_omni_text/",
+  "persona_file_glob": "stage_2_text_based_*.json",
+  "max_personas": null,
+  "build_workers": 1,
+  "seed": 64,
+
+  "embedding": {
+    "model_name": "Qwen/Qwen3-Embedding-0.6B",
+    "device": "cuda:0",
+    "batch_size": 64,
+    "model_kwargs": {
+      "attn_implementation": "flash_attention_2",
+      "torch_dtype": "bfloat16"
+    },
+    "processor_kwargs": {
+      "padding_side": "left"
+    }
+  },
+
+  "index": {
+    "type": "flat"
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}

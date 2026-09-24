@@ -1,0 +1,24 @@
+{
+  "_note": "PRIMARY LLM-as-Judge config (Qwen3.7-Plus, no thinking). Every run's binding judge/ output uses this config; the GLM-5.2 and Grok-4.5 panel configs are secondary judges for agreement measurement only. Set input/output here or override with --input/--output-dir CLI flags.",
+
+  "input": null,
+  "output_dir": null,
+  "_example_input": "${MOSAIC_DATA_ROOT}/evaluation_results/eval_caption_text/details.jsonl",
+
+  "judge_workers": 200,
+
+  "judge": {
+    "llm_model": "qwen/qwen3.7-plus",
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "thinking_disabled": true,
+    "extra_body": {"enable_thinking": false}
+  },
+
+  "logging": {
+    "level": "INFO",
+    "file": null
+  }
+}
