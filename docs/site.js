@@ -2,9 +2,6 @@ const tabs = document.querySelectorAll(".tabs a");
 const panels = document.querySelectorAll(".panel");
 
 function show(name) {
-  panels.forEach((panel) => {
-    panel.hidden = panel.dataset.panel !== name;
-  });
   tabs.forEach((tab) => {
     const on = tab.dataset.tab === name;
     tab.setAttribute("aria-current", on ? "page" : "false");
@@ -143,7 +140,7 @@ trackButtons.forEach((button) => {
   });
 });
 
-fetch("leaderboard.json")
+fetch(new URL("leaderboard.json", window.location.href))
   .then((response) => {
     if (!response.ok) throw new Error(String(response.status));
     return response.json();

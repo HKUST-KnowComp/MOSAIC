@@ -59,7 +59,7 @@
       </div>
     </section>
 
-    <section id="benchmark" class="panel" hidden data-panel="benchmark">
+    <section id="benchmark" class="panel" data-panel="benchmark">
       <h2>What is in the release</h2>
       <p class="sub">Point <code>MOSAIC_DATA_ROOT</code> at the downloaded dataset. The evaluation code reads these paths.</p>
       <div class="cards">
@@ -93,7 +93,7 @@
       <p>Refusal items remove the required evidence. A system should answer when the chain is present and refuse when it is not. Track A holds the reader fixed and is the diagnostic comparison. Track B changes the whole system and is a deployment-style illustration.</p>
     </section>
 
-    <section id="findings" class="panel" hidden data-panel="findings">
+    <section id="findings" class="panel" data-panel="findings">
       <h2>What the diagnosis shows</h2>
       <p class="sub">These contrasts keep the question set fixed. Spatial evidence and delivery are the strongest results. Video timing and raw audio versus a transcript are smaller and should not be read as equally settled.</p>
       <div class="findings">
@@ -118,7 +118,7 @@
       </aside>
     </section>
 
-    <section id="leaderboard" class="panel" hidden data-panel="leaderboard">
+    <section id="leaderboard" class="panel" data-panel="leaderboard">
       <h2>Leaderboard</h2>
       <p class="sub">Paper baselines only. A new row is added to <code>docs/leaderboard.json</code> after the run is checked against the 923-question set and the same judge.</p>
       <div class="track-switch" role="tablist" aria-label="Leaderboard track">
@@ -135,7 +135,7 @@
       <p class="fine" id="board-status">Loading the paper baselines.</p>
     </section>
 
-    <section id="submit" class="panel" hidden data-panel="submit">
+    <section id="submit" class="panel" data-panel="submit">
       <h2>Submit a result</h2>
       <p class="sub">Use the released 923 questions and the paper’s judge. Report the answerable score, and for an end-to-end run also the correct-refusal and false-refusal rates. Accepted rows are written into the leaderboard file.</p>
       <form id="submit-form">

@@ -111,6 +111,10 @@ h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 1.02; margin: 0; }
 .stages strong { display: block; font-family: Fraunces, serif; font-size: 1.35rem; margin: 0.2rem 0; }
 .stages span { color: var(--muted); }
 
+.panel { display: none; scroll-margin-top: 4.5rem; }
+.panel:target,
+:root:not(:has(.panel:target)) #overview { display: block; }
+
 .sub { color: var(--muted); max-width: 44rem; }
 .cards, .findings { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
 .cards article, .findings article, aside {
