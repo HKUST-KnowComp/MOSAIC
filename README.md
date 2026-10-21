@@ -29,7 +29,6 @@ This repository is the evaluation code and the project page. It does not include
 | --- | ---: |
 | Questions | 923 |
 | Answerable / refusal | 784 / 139 |
-| Personas | 70 |
 | Sessions per history | 11–24 |
 | Modalities | Text, image, video, audio |
 
