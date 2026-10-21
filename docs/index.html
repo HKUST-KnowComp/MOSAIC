@@ -121,18 +121,66 @@
     <section id="leaderboard" class="panel" data-panel="leaderboard">
       <h2>Leaderboard</h2>
       <p class="sub">Paper baselines only. A new row is added to <code>docs/leaderboard.json</code> after the run is checked against the 923-question set and the same judge.</p>
-      <div class="track-switch" role="tablist" aria-label="Leaderboard track">
-        <button type="button" data-track="b" aria-selected="true">End to end</button>
-        <button type="button" data-track="a" aria-selected="false">Fixed reader</button>
+      <div class="boards">
+        <input type="radio" name="board" id="board-b" checked>
+        <input type="radio" name="board" id="board-a">
+        <div class="track-switch">
+          <label for="board-b">End to end</label>
+          <label for="board-a">Fixed reader</label>
+        </div>
+
+        <div class="board board-b">
+          <p class="sub">923 questions. Each system uses its own reader and memory stack. Answerable score is the mean judge score on 784 answerable items. Correct refusal is the rate of refusing the 139 items whose evidence was removed. False refusal is the rate of refusing an answerable item. A high correct-refusal rate with a high false-refusal rate is indiscriminate abstention, not a better memory.</p>
+          <div class="table-wrap">
+            <table class="score-table">
+              <thead>
+                <tr>
+                  <th>#</th><th>System</th><th>Memory</th><th>Reader</th>
+                  <th class="num">Answerable</th><th class="num">Correct refusal</th>
+                  <th class="num">False refusal</th><th class="num">Latency (s)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>ReAct</td><td>Native multimodal</td><td>MiMo-V2.5</td><td class="num best">0.732</td><td class="num">0.410</td><td class="num best">0.018</td><td class="num">73.6</td></tr>
+                <tr><td>2</td><td>Naive RAG</td><td>Native multimodal</td><td>Gemini 3.5</td><td class="num">0.687</td><td class="num">0.496</td><td class="num">0.022</td><td class="num">31.2</td></tr>
+                <tr><td>3</td><td>ReAct</td><td>Native multimodal</td><td>Gemini 3.5</td><td class="num">0.674</td><td class="num">0.417</td><td class="num">0.037</td><td class="num">46.4</td></tr>
+                <tr><td>4</td><td>A-MEM</td><td>Caption text</td><td>DeepSeek-v4-Flash</td><td class="num">0.623</td><td class="num">0.719</td><td class="num">0.173</td><td class="num">—</td></tr>
+                <tr><td>5</td><td>Naive RAG</td><td>Native multimodal</td><td>MiMo-V2.5</td><td class="num">0.614</td><td class="num">0.734</td><td class="num">0.143</td><td class="num">29.6</td></tr>
+                <tr><td>6</td><td>A-MEM</td><td>Omni text</td><td>DeepSeek-v4-Flash</td><td class="num">0.611</td><td class="num">0.763</td><td class="num">0.177</td><td class="num">—</td></tr>
+                <tr><td>7</td><td>ReAct</td><td>Omni text</td><td>DeepSeek-v4-Flash</td><td class="num">0.419</td><td class="num">0.799</td><td class="num">0.390</td><td class="num">17.5</td></tr>
+                <tr><td>8</td><td>ReAct</td><td>Caption text</td><td>DeepSeek-v4-Flash</td><td class="num">0.415</td><td class="num">0.820</td><td class="num">0.404</td><td class="num">18.6</td></tr>
+                <tr><td>9</td><td>Naive RAG</td><td>Caption text</td><td>DeepSeek-v4-Flash</td><td class="num">0.390</td><td class="num">0.835</td><td class="num">0.431</td><td class="num best">5.8</td></tr>
+                <tr><td>10</td><td>Naive RAG</td><td>Omni text</td><td>DeepSeek-v4-Flash</td><td class="num">0.375</td><td class="num">0.871</td><td class="num">0.421</td><td class="num">6.2</td></tr>
+                <tr><td>11</td><td>MemoryOS</td><td>Omni text</td><td>DeepSeek-v4-Flash</td><td class="num">0.255</td><td class="num best">0.892</td><td class="num">0.614</td><td class="num">228.4</td></tr>
+                <tr><td>12</td><td>MemoryOS</td><td>Caption text</td><td>DeepSeek-v4-Flash</td><td class="num">0.243</td><td class="num">0.885</td><td class="num">0.649</td><td class="num">205.4</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="board board-a">
+          <p class="sub">784 answerable questions. The reader is Gemini 3.5 for every row, so the score isolates the memory backend. Chain coverage is the fraction of items whose full required evidence chain is delivered. MemoryOS coverage is not observable in this run.</p>
+          <div class="table-wrap">
+            <table class="score-table">
+              <thead>
+                <tr>
+                  <th>#</th><th>Backend</th><th>Memory</th>
+                  <th class="num">Chain coverage</th><th class="num">Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>A-MEM</td><td>Caption text</td><td class="num best">0.787</td><td class="num best">0.684</td></tr>
+                <tr><td>2</td><td>A-MEM</td><td>Omni text</td><td class="num">0.702</td><td class="num">0.664</td></tr>
+                <tr><td>3</td><td>Flat RAG</td><td>Native multimodal</td><td class="num">0.466</td><td class="num">0.641</td></tr>
+                <tr><td>4</td><td>Flat RAG</td><td>Caption text</td><td class="num">0.698</td><td class="num">0.522</td></tr>
+                <tr><td>5</td><td>Flat RAG</td><td>Omni text</td><td class="num">0.705</td><td class="num">0.500</td></tr>
+                <tr><td>6</td><td>MemoryOS</td><td>Omni text</td><td class="num">—</td><td class="num">0.279</td></tr>
+                <tr><td>7</td><td>MemoryOS</td><td>Caption text</td><td class="num">—</td><td class="num">0.268</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-      <p id="board-note" class="sub"></p>
-      <div class="table-wrap">
-        <table id="board">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <p class="fine" id="board-status">Loading the paper baselines.</p>
     </section>
 
     <section id="submit" class="panel" data-panel="submit">

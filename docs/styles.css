@@ -150,35 +150,45 @@ button {
 }
 .fine { color: var(--muted); font-size: 0.92rem; }
 
+.boards > input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 .track-switch { display: flex; gap: 0.4rem; margin: 0.4rem 0 0.2rem; }
-.track-switch button {
-  background: transparent;
-  color: var(--muted);
+.track-switch label {
   border: 1px solid var(--line);
   border-radius: 999px;
+  padding: 0.55rem 0.95rem;
+  color: var(--muted);
+  cursor: pointer;
 }
-.track-switch button[aria-selected="true"] {
+#board-b:checked ~ .track-switch label[for="board-b"],
+#board-a:checked ~ .track-switch label[for="board-a"] {
   background: var(--ink);
   color: var(--paper);
   border-color: var(--ink);
 }
+.board { display: none; }
+#board-b:checked ~ .board-b,
+#board-a:checked ~ .board-a { display: block; }
 .table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
   background: var(--card);
 }
-#board { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-#board th, #board td { padding: 0.65rem 0.75rem; text-align: left; white-space: nowrap; }
-#board th {
+.score-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.score-table th, .score-table td { padding: 0.65rem 0.75rem; text-align: left; white-space: nowrap; }
+.score-table th {
   font-weight: 500;
   color: var(--muted);
   border-bottom: 1px solid var(--line);
-  cursor: pointer;
 }
-#board td { border-bottom: 1px solid var(--line); }
-#board tbody tr:last-child td { border-bottom: 0; }
-#board td.num, #board th.num { text-align: right; font-variant-numeric: tabular-nums; }
-#board .best { font-weight: 640; }
+.score-table td { border-bottom: 1px solid var(--line); }
+.score-table tbody tr:last-child td { border-bottom: 0; }
+.score-table td.num, .score-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.score-table .best { font-weight: 640; }
 .badge {
   display: inline-block;
   margin-left: 0.4rem;
