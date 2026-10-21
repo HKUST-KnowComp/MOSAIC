@@ -1,5 +1,7 @@
 # MOSAIC evaluation
 
+Project page: [hkust-knowcomp.github.io/MOSAIC](https://hkust-knowcomp.github.io/MOSAIC/) (`docs/` on this repository; enable GitHub Pages from the `docs` folder). The page introduces the benchmark and hosts the paper leaderboard. A checked community run is added as a row in `docs/leaderboard.json`.
+
 Evaluation code for MOSAIC, a long-horizon omni-modal memory benchmark. This repository runs the paper protocol: retrieval, delivery, reading, judging, and the controlled stage and modality comparisons.
 
 The released artifact is the frozen 923-item dataset (784 answerable, 139 refusal). This repository does not include the benchmark generator.

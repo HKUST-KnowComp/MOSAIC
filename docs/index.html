@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MOSAIC — Omni-modal long-term memory benchmark</title>
+  <meta name="description" content="MOSAIC is a 923-question benchmark that diagnoses WRITE, RETRIEVE, DELIVER, and READ failures in omni-modal conversational memory.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,620&family=Outfit:wght@380;500;640&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <a class="mark" href="#overview">MOSAIC</a>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#overview" data-tab="overview">Overview</a>
+      <a href="#benchmark" data-tab="benchmark">Benchmark</a>
+      <a href="#leaderboard" data-tab="leaderboard">Leaderboard</a>
+      <a href="#findings" data-tab="findings">Findings</a>
+      <a href="#submit" data-tab="submit">Submit</a>
+    </nav>
+    <a class="chip" href="https://github.com/HKUST-KnowComp/MOSAIC">Code</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="kicker">HKUST KnowComp · long-term conversational memory</p>
+      <h1>Safe memory is not one score.<br>It fails in four places.</h1>
+      <p class="lede">MOSAIC asks whether an assistant can remember what a person said, showed, and conveyed across weeks of conversation. The benchmark holds the question, reader, prompt, and budget fixed, then intervenes on one stage at a time.</p>
+      <div class="links">
+        <a class="btn" href="#leaderboard">Leaderboard</a>
+        <a class="btn ghost" href="https://openreview.net/forum?id=juBgXjNvg4">Paper</a>
+        <a class="btn ghost" href="https://github.com/HKUST-KnowComp/MOSAIC">GitHub</a>
+        <a class="btn ghost" href="https://huggingface.co/datasets/gzone0111/MOSAIC">Dataset</a>
+        <span class="soon">arXiv forthcoming</span>
+      </div>
+    </section>
+
+    <section id="overview" class="panel" data-panel="overview">
+      <div class="stats">
+        <div><b>923</b><span>questions</span></div>
+        <div><b>70</b><span>personas</span></div>
+        <div><b>784</b><span>answerable</span></div>
+        <div><b>139</b><span>refusals</span></div>
+        <div><b>11–24</b><span>sessions each</span></div>
+      </div>
+      <div class="split">
+        <div>
+          <h2>Four stages, one question.</h2>
+          <p>Existing memory benchmarks mostly cover text and images, and they report a single end-to-end number. That number cannot say whether the evidence was lost when it was written down, when it was retrieved, when it was packed into the prompt, or when the model read it.</p>
+          <p>85.2% of answerable questions need two or more facts. 75.0% need two or more modalities. The media carry the decision: spatial layout, fine visual detail, video order and repetition, or vocal prosody.</p>
+        </div>
+        <ol class="stages">
+          <li><em>01</em><strong>Write</strong><span>How the history is stored: native media, or a text substitute.</span></li>
+          <li><em>02</em><strong>Retrieve</strong><span>Whether the right evidence is found in the long history.</span></li>
+          <li><em>03</em><strong>Deliver</strong><span>Whether that evidence actually enters the model request.</span></li>
+          <li><em>04</em><strong>Read</strong><span>Whether the reader answers from the evidence it was given.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="benchmark" class="panel" hidden data-panel="benchmark">
+      <h2>What is in the release</h2>
+      <p class="sub">Point <code>MOSAIC_DATA_ROOT</code> at the downloaded dataset. The evaluation code reads these paths.</p>
+      <div class="cards">
+        <article>
+          <h3>Questions</h3>
+          <p><code>dataset/stage2_human_filtered/</code></p>
+          <p>70 persona files. Each item has a question, an evidence chain, and a timestamped session history.</p>
+        </article>
+        <article>
+          <h3>Media</h3>
+          <p><code>dataset/media/</code></p>
+          <p>Images, audio, and video. Stored paths that contain <code>clean_output/media/</code> are mapped onto this folder.</p>
+        </article>
+        <article>
+          <h3>Text views</h3>
+          <p><code>textualized_caption/</code> and <code>textualized_omni/</code></p>
+          <p>The same histories as captions, so a text-only system can be compared with native media.</p>
+        </article>
+        <article>
+          <h3>Indexes and records</h3>
+          <p><code>indexes/</code> and <code>records/protocol_v1/</code></p>
+          <p>RAG, A-MEM, and MemoryOS indexes, plus the paper’s evaluation records.</p>
+        </article>
+      </div>
+      <h3 class="spaced">Evidence roles</h3>
+      <ul class="roles">
+        <li><b>Narrower</b> Context that rules candidates out.</li>
+        <li><b>Selector</b> The cue that picks which evidence matters. For audio, this can be prosody rather than the words.</li>
+        <li><b>Answer</b> The hop that states the value the question asks for.</li>
+      </ul>
+      <p>Refusal items remove the required evidence. A system should answer when the chain is present and refuse when it is not. Track A holds the reader fixed and is the diagnostic comparison. Track B changes the whole system and is a deployment-style illustration.</p>
+    </section>
+
+    <section id="findings" class="panel" hidden data-panel="findings">
+      <h2>What the diagnosis shows</h2>
+      <p class="sub">These contrasts keep the question set fixed. Spatial evidence and delivery are the strongest results. Video timing and raw audio versus a transcript are smaller and should not be read as equally settled.</p>
+      <div class="findings">
+        <article>
+          <p class="tag">Deliver</p>
+          <h3>Retrieved is not delivered.</h3>
+          <p>On the same top-50 ranking, tightening what enters the request moves the score from <b>0.708</b> to <b>0.670</b>. Complete-chain delivery falls from <b>0.675</b> to <b>0.491</b>. Packing after retrieval is its own failure.</p>
+        </article>
+        <article>
+          <p class="tag">Write · image</p>
+          <h3>Object lists drop the relation.</h3>
+          <p>On the same items, raw images score <b>32.0</b> points above OCR. A spatial description scores <b>15.4</b> points above a list of objects. Presence of an object is not the layout between objects.</p>
+        </article>
+        <article>
+          <p class="tag">Budget</p>
+          <h3>The tight budget is joint.</h3>
+          <p>The most restrictive setting in the delivery figure changes top-k and the per-modality attachment limit together. The <b>17.7</b>-point drop belongs to that combined budget, not to the one-media cap alone.</p>
+        </article>
+      </div>
+      <aside>
+        <p>Reading still leaves a residual when gold evidence is handed to the model. That residual includes the reader, the output format, the item, and the judge. It is a result for this setup, not a universal bottleneck. Abstention is also unreliable: question form is partly predictive on this stripped-evidence refusal set.</p>
+      </aside>
+    </section>
+
+    <section id="leaderboard" class="panel" hidden data-panel="leaderboard">
+      <h2>Leaderboard</h2>
+      <p class="sub">Paper baselines only. A new row is added to <code>docs/leaderboard.json</code> after the run is checked against the 923-question set and the same judge.</p>
+      <div class="track-switch" role="tablist" aria-label="Leaderboard track">
+        <button type="button" data-track="b" aria-selected="true">End to end</button>
+        <button type="button" data-track="a" aria-selected="false">Fixed reader</button>
+      </div>
+      <p id="board-note" class="sub"></p>
+      <div class="table-wrap">
+        <table id="board">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="fine" id="board-status">Loading the paper baselines.</p>
+    </section>
+
+    <section id="submit" class="panel" hidden data-panel="submit">
+      <h2>Submit a result</h2>
+      <p class="sub">Use the released 923 questions and the paper’s judge. Report the answerable score, and for an end-to-end run also the correct-refusal and false-refusal rates. Accepted rows are written into the leaderboard file.</p>
+      <form id="submit-form">
+        <label>System name<input name="system" required placeholder="e.g. Naive RAG"></label>
+        <label>Track
+          <select name="track">
+            <option>End to end</option>
+            <option>Fixed reader</option>
+          </select>
+        </label>
+        <label>Memory
+          <select name="representation">
+            <option>Caption text</option>
+            <option>Omni text</option>
+            <option>Native multimodal</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Reader<input name="reader" required placeholder="e.g. Gemini 3.5"></label>
+        <label>Answerable score<input name="score" required inputmode="decimal" placeholder="0.000"></label>
+        <label>Correct refusal<input name="correct" inputmode="decimal" placeholder="0.000, end-to-end runs"></label>
+        <label>False refusal<input name="false_refusal" inputmode="decimal" placeholder="0.000, end-to-end runs"></label>
+        <label>Code or log URL<input name="url" type="url" placeholder="https://"></label>
+        <label>Notes<textarea name="notes" rows="4" placeholder="Retrieval budget, what was delivered, and any confidence interval."></textarea></label>
+        <button type="submit">Open a GitHub issue</button>
+      </form>
+      <p class="fine">The issue is filed on <a href="https://github.com/HKUST-KnowComp/MOSAIC">HKUST-KnowComp/MOSAIC</a>. Include enough detail for someone else to rerun the number.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Hong Ting Tsang, Boyi Zhang, Haoyu Huang, Jiaxin Bai, Yufei Li, Yisen Gao, Zhongwei Xie, Hongyu Luo, Jeff Z. Pan, Yangqiu Song</p>
+    <p>HKUST KnowComp · University of Edinburgh</p>
+  </footer>
+  <script src="site.js"></script>
+</body>
+</html>

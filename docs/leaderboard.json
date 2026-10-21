@@ -1,0 +1,55 @@
+{
+  "updated": "2026-10-21",
+  "tracks": [
+    {
+      "id": "b",
+      "name": "End to end",
+      "note": "923 questions. Each system uses its own reader and memory stack. Answerable score is the mean judge score on 784 answerable items. Correct refusal is the rate of refusing the 139 items whose evidence was removed. False refusal is the rate of refusing an answerable item. A high correct-refusal rate with a high false-refusal rate is indiscriminate abstention, not a better memory.",
+      "sort": "answerable",
+      "columns": [
+        {"key": "system", "label": "System"},
+        {"key": "memory", "label": "Memory"},
+        {"key": "reader", "label": "Reader"},
+        {"key": "answerable", "label": "Answerable", "numeric": true, "digits": 3},
+        {"key": "correct_refusal", "label": "Correct refusal", "numeric": true, "digits": 3},
+        {"key": "false_refusal", "label": "False refusal", "numeric": true, "digits": 3, "lower": true},
+        {"key": "latency", "label": "Latency (s)", "numeric": true, "digits": 1, "lower": true}
+      ],
+      "rows": [
+        {"system": "ReAct", "memory": "Native multimodal", "reader": "MiMo-V2.5", "answerable": 0.732, "correct_refusal": 0.410, "false_refusal": 0.018, "latency": 73.6, "source": "paper"},
+        {"system": "Naive RAG", "memory": "Native multimodal", "reader": "Gemini 3.5", "answerable": 0.687, "correct_refusal": 0.496, "false_refusal": 0.022, "latency": 31.2, "source": "paper"},
+        {"system": "ReAct", "memory": "Native multimodal", "reader": "Gemini 3.5", "answerable": 0.674, "correct_refusal": 0.417, "false_refusal": 0.037, "latency": 46.4, "source": "paper"},
+        {"system": "A-MEM", "memory": "Caption text", "reader": "DeepSeek-v4-Flash", "answerable": 0.623, "correct_refusal": 0.719, "false_refusal": 0.173, "latency": null, "source": "paper"},
+        {"system": "Naive RAG", "memory": "Native multimodal", "reader": "MiMo-V2.5", "answerable": 0.614, "correct_refusal": 0.734, "false_refusal": 0.143, "latency": 29.6, "source": "paper"},
+        {"system": "A-MEM", "memory": "Omni text", "reader": "DeepSeek-v4-Flash", "answerable": 0.611, "correct_refusal": 0.763, "false_refusal": 0.177, "latency": null, "source": "paper"},
+        {"system": "ReAct", "memory": "Omni text", "reader": "DeepSeek-v4-Flash", "answerable": 0.419, "correct_refusal": 0.799, "false_refusal": 0.390, "latency": 17.5, "source": "paper"},
+        {"system": "ReAct", "memory": "Caption text", "reader": "DeepSeek-v4-Flash", "answerable": 0.415, "correct_refusal": 0.820, "false_refusal": 0.404, "latency": 18.6, "source": "paper"},
+        {"system": "Naive RAG", "memory": "Caption text", "reader": "DeepSeek-v4-Flash", "answerable": 0.390, "correct_refusal": 0.835, "false_refusal": 0.431, "latency": 5.8, "source": "paper"},
+        {"system": "Naive RAG", "memory": "Omni text", "reader": "DeepSeek-v4-Flash", "answerable": 0.375, "correct_refusal": 0.871, "false_refusal": 0.421, "latency": 6.2, "source": "paper"},
+        {"system": "MemoryOS", "memory": "Omni text", "reader": "DeepSeek-v4-Flash", "answerable": 0.255, "correct_refusal": 0.892, "false_refusal": 0.614, "latency": 228.4, "source": "paper"},
+        {"system": "MemoryOS", "memory": "Caption text", "reader": "DeepSeek-v4-Flash", "answerable": 0.243, "correct_refusal": 0.885, "false_refusal": 0.649, "latency": 205.4, "source": "paper"}
+      ]
+    },
+    {
+      "id": "a",
+      "name": "Fixed reader",
+      "note": "784 answerable questions. The reader is Gemini 3.5 for every row, so the score isolates the memory backend. Chain coverage is the fraction of items whose full required evidence chain is delivered. MemoryOS coverage is not observable in this run.",
+      "sort": "score",
+      "columns": [
+        {"key": "system", "label": "Backend"},
+        {"key": "memory", "label": "Memory"},
+        {"key": "chain", "label": "Chain coverage", "numeric": true, "digits": 3},
+        {"key": "score", "label": "Score", "numeric": true, "digits": 3}
+      ],
+      "rows": [
+        {"system": "A-MEM", "memory": "Caption text", "chain": 0.787, "score": 0.684, "source": "paper"},
+        {"system": "A-MEM", "memory": "Omni text", "chain": 0.702, "score": 0.664, "source": "paper"},
+        {"system": "Flat RAG", "memory": "Native multimodal", "chain": 0.466, "score": 0.641, "source": "paper"},
+        {"system": "Flat RAG", "memory": "Caption text", "chain": 0.698, "score": 0.522, "source": "paper"},
+        {"system": "Flat RAG", "memory": "Omni text", "chain": 0.705, "score": 0.500, "source": "paper"},
+        {"system": "MemoryOS", "memory": "Omni text", "chain": null, "score": 0.279, "source": "paper"},
+        {"system": "MemoryOS", "memory": "Caption text", "chain": null, "score": 0.268, "source": "paper"}
+      ]
+    }
+  ]
+}
