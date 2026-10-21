@@ -90,7 +90,7 @@ evaluation/
 
 Configs store paths as `${MOSAIC_DATA_ROOT}/...`. The loaders expand that variable when a run starts. New runs write under `$MOSAIC_DATA_ROOT/outputs/` and do not modify `records/`.
 
-Do not put API keys in the JSON configs. Each config names the variable it reads in `api_key_env`. OpenRouter configs also accept `LLM_API_KEY` when `OPENROUTER_API_KEY` is unset. DeepSeek runs read `DEEPSEEK_API_KEY`, and the Gemini runs read `YUNWU_API_KEY`. MemoryOS runs also need the MemoryOS checkout:
+Do not put API keys in the JSON configs. Set `LLM_API_KEY`, and set `LLM_BASE_URL` when the endpoint is not the one written in the config. A provider-specific variable still wins when it is set. MemoryOS runs also need the MemoryOS checkout:
 
 ```bash
 export MEMORYOS_PATH=/path/to/memoryos-pypi

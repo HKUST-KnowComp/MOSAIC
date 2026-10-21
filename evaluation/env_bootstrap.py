@@ -1,12 +1,12 @@
 """Load repo ``.env`` into ``os.environ`` for evaluation scripts.
 
-Evaluation configs look up uniquely named variables such as
-``DEEPSEEK_API_KEY``, ``OPENROUTER_API_KEY``, and ``YUNWU_API_KEY``. The
-repo ``.env`` historically used overlapping names (``API_KEY``,
-``LLM_API_KEY``, …). This module:
+Evaluation configs name a provider variable such as ``DEEPSEEK_API_KEY``.
+``LLM_API_KEY`` fills any of those names when the named variable is unset,
+and ``LLM_BASE_URL`` does the same for the matching base URL. A named
+provider variable still wins when it is set. This module:
 
 1. Parses ``.env`` without overriding already-exported shell variables.
-2. Applies provider aliases so the historical names still work.
+2. Applies those aliases.
 3. Normalizes Yunwu base URLs to the OpenAI-compatible ``.../v1`` form.
 
 Importing this module is side-effect free; call :func:`ensure_env_loaded`.
@@ -26,18 +26,21 @@ DEFAULT_ENV_FILE = REPO_ROOT / ".env"
 # Canonical name -> fallback names to copy from when the canonical name is unset.
 # Order matters: first non-empty wins.
 _ALIASES: dict[str, tuple[str, ...]] = {
+    "DEEPSEEK_API_KEY": ("DEEPSEEK_API_KEY", "LLM_API_KEY"),
+    "DEEPSEEK_BASE_URL": ("DEEPSEEK_BASE_URL", "DEEPSEEK_URL", "LLM_BASE_URL"),
     "OPENROUTER_API_KEY": ("OPENROUTER_API_KEY", "LLM_API_KEY"),
     "OPENROUTER_BASE_URL": ("OPENROUTER_BASE_URL", "LLM_BASE_URL"),
-    "YUNWU_API_KEY": ("YUNWU_API_KEY", "GEMINI_KEY"),
-    "YUNWU_BASE_URL": ("YUNWU_BASE_URL", "YUNWU_URL", "URL"),
-    "DEEPSEEK_BASE_URL": ("DEEPSEEK_BASE_URL", "DEEPSEEK_URL"),
+    "OPENAI_API_KEY": ("OPENAI_API_KEY", "LLM_API_KEY"),
+    "YUNWU_API_KEY": ("YUNWU_API_KEY", "GEMINI_KEY", "LLM_API_KEY"),
+    "YUNWU_BASE_URL": ("YUNWU_BASE_URL", "YUNWU_URL", "URL", "LLM_BASE_URL"),
 }
 
 # When a config block uses api_key_env X, prefer these env vars for base_url.
 _BASE_URL_FOR_API_KEY_ENV: dict[str, tuple[str, ...]] = {
-    "DEEPSEEK_API_KEY": ("DEEPSEEK_BASE_URL", "DEEPSEEK_URL"),
+    "DEEPSEEK_API_KEY": ("DEEPSEEK_BASE_URL", "DEEPSEEK_URL", "LLM_BASE_URL"),
     "OPENROUTER_API_KEY": ("OPENROUTER_BASE_URL", "LLM_BASE_URL"),
-    "YUNWU_API_KEY": ("YUNWU_BASE_URL", "YUNWU_URL", "URL"),
+    "OPENAI_API_KEY": ("OPENAI_BASE_URL", "LLM_BASE_URL"),
+    "YUNWU_API_KEY": ("YUNWU_BASE_URL", "YUNWU_URL", "URL", "LLM_BASE_URL"),
 }
 
 
@@ -131,7 +134,7 @@ def expand_mosaic_string(value: str) -> str:
     if not root:
         raise RuntimeError(
             "Set MOSAIC_DATA_ROOT to the released data directory "
-            "(the folder that contains human_filtered_evaluation_results/)."
+            "(the folder that contains dataset/stage2_human_filtered/)."
         )
     return value.replace(_DATA_ROOT_TOKEN, root)
 
@@ -147,14 +150,29 @@ def expand_mosaic_paths(value: Any) -> Any:
     return value
 
 
-def resolve_base_url_for_api_key_env(api_key_env: str | None) -> str | None:
-    """Return a provider base URL from the environment for a given api_key_env."""
-    if not api_key_env:
-        return None
+def resolve_api_key(api_key_env: str | None = None) -> str:
+    """Return the named key, or ``LLM_API_KEY`` when that name is unset."""
     ensure_env_loaded()
-    for name in _BASE_URL_FOR_API_KEY_ENV.get(str(api_key_env), ()):
+    if api_key_env:
+        named = os.getenv(str(api_key_env), "").strip()
+        if named:
+            return named
+    return os.getenv("LLM_API_KEY", "").strip()
+
+
+def resolve_base_url_for_api_key_env(api_key_env: str | None) -> str | None:
+    """Return a provider base URL from the environment for a given api_key_env.
+
+    ``LLM_BASE_URL`` is the last fallback, including for a name that has no
+    provider-specific URL list.
+    """
+    ensure_env_loaded()
+    names = list(_BASE_URL_FOR_API_KEY_ENV.get(str(api_key_env or ""), ()))
+    if "LLM_BASE_URL" not in names:
+        names.append("LLM_BASE_URL")
+    for name in names:
         value = os.getenv(name)
         if value:
-            provider = "yunwu" if str(api_key_env) == "YUNWU_API_KEY" else None
+            provider = "yunwu" if str(api_key_env) == "YUNWU_API_KEY" and name != "LLM_BASE_URL" else None
             return _normalize_base_url(value, provider=provider)
     return None

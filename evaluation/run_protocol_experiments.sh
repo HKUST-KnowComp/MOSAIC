@@ -15,7 +15,7 @@ if [[ -z "${EVAL_OUTPUT_ROOT:-}" && -z "${MOSAIC_DATA_ROOT:-}" ]]; then
   echo "Set MOSAIC_DATA_ROOT or EVAL_OUTPUT_ROOT." >&2
   exit 1
 fi
-OUTPUT_ROOT="${EVAL_OUTPUT_ROOT:-${MOSAIC_DATA_ROOT}/evaluation_results/protocol_v1}"
+OUTPUT_ROOT="${EVAL_OUTPUT_ROOT:-${MOSAIC_DATA_ROOT}/records/protocol_v1}"
 DEFAULT_VARIANTS="caption_text,omni_text,omni_mm_xiaomi,omni_mm_gemini,omni_mm_gemini_3_5"
 
 # Load repo .env + provider aliases into this shell so require_api_key sees them.
@@ -227,8 +227,8 @@ run_env_python() {
 require_api_key() {
   local variant="$1"
   local variable="${REQUIRED_API_ENV[$variant]}"
-  if ((DRY_RUN == 0)) && [[ -z "${!variable:-}" ]]; then
-    echo "Required environment variable is unset: $variable ($variant)" >&2
+  if ((DRY_RUN == 0)) && [[ -z "${!variable:-}" && -z "${LLM_API_KEY:-}" ]]; then
+    echo "Required environment variable is unset: $variable or LLM_API_KEY ($variant)" >&2
     exit 1
   fi
 }

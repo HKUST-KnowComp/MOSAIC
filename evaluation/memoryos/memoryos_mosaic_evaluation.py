@@ -519,7 +519,7 @@ def main():
     _eval_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     if _eval_root not in sys.path:
         sys.path.insert(0, _eval_root)
-    from env_bootstrap import expand_mosaic_paths
+    from env_bootstrap import expand_mosaic_paths, resolve_api_key
 
     config = expand_mosaic_paths(load_json(args.config))
 
@@ -527,10 +527,10 @@ def main():
     api_key = config.get("api_key", "")
     if not api_key:
         api_key_env = config.get("openai_api_key_env", "OPENAI_API_KEY")
-        api_key = os.getenv(api_key_env, "")
+        api_key = resolve_api_key(str(api_key_env))
     if not api_key:
-        print("ERROR: No API key found. Set 'api_key' in config or set env var "
-              f"{config.get('openai_api_key_env', 'OPENAI_API_KEY')}.")
+        print("ERROR: No API key found. Set 'api_key' in config or set "
+              f"{config.get('openai_api_key_env', 'OPENAI_API_KEY')} or LLM_API_KEY.")
         sys.exit(1)
 
     data_dir = config["data_dir"]

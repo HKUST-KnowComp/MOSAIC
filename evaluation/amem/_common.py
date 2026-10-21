@@ -50,6 +50,7 @@ def load_config(config_path: str) -> dict:
     from env_bootstrap import (
         ensure_env_loaded,
         expand_mosaic_paths,
+        resolve_api_key,
         resolve_base_url_for_api_key_env,
     )
 
@@ -61,7 +62,7 @@ def load_config(config_path: str) -> dict:
     def _resolve_key(cfg: dict):
         env_var = cfg.get("api_key_env")
         if not cfg.get("api_key") and env_var:
-            cfg["api_key"] = os.getenv(env_var, "")
+            cfg["api_key"] = resolve_api_key(str(env_var))
         if env_var:
             resolved = resolve_base_url_for_api_key_env(str(env_var))
             if resolved and "base_url" in cfg:

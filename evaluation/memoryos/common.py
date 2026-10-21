@@ -466,6 +466,7 @@ def load_eval_config(config_path: str) -> dict:
     from env_bootstrap import (
         ensure_env_loaded,
         expand_mosaic_paths,
+        resolve_api_key,
         resolve_base_url_for_api_key_env,
     )
 
@@ -479,10 +480,10 @@ def load_eval_config(config_path: str) -> dict:
         config.get("openai_api_key_env", "OPENAI_API_KEY"),
     )
     if not api_key:
-        api_key = os.getenv(api_key_env, "")
+        api_key = resolve_api_key(str(api_key_env))
     if not api_key:
-        print("ERROR: No API key found. Set 'api_key' in config or set env var "
-              f"{api_key_env}.")
+        print("ERROR: No API key found. Set 'api_key' in config or set "
+              f"{api_key_env} or LLM_API_KEY.")
         sys.exit(1)
     config["_resolved_api_key"] = api_key
 

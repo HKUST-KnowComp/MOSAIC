@@ -78,6 +78,7 @@ def load_config(config_path: str) -> dict:
     from env_bootstrap import (
         ensure_env_loaded,
         expand_mosaic_paths,
+        resolve_api_key,
         resolve_base_url_for_api_key_env,
     )
 
@@ -90,7 +91,7 @@ def load_config(config_path: str) -> dict:
         if isinstance(value, dict):
             env_var = value.get("api_key_env") or value.get("openai_api_key_env")
             if not value.get("api_key") and env_var:
-                value["api_key"] = os.getenv(str(env_var), "")
+                value["api_key"] = resolve_api_key(str(env_var))
 
             base_url_env = value.get("base_url_env")
             if base_url_env and os.getenv(str(base_url_env)):
