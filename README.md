@@ -15,6 +15,10 @@
 
 </div>
 
+<img src="docs/figures/overview.png" alt="MOSAIC overview. Top: a five-session history of text, image, video, and audio that must be chained to answer one question. Bottom: the four places a system can lose that evidence, write, retrieve, deliver, and read." width="100%">
+
+The top row is what a question asks the system to remember. The bottom row is where that evidence can be lost: write, retrieve, deliver, and read.
+
 MOSAIC tests whether a conversational agent can use a long history of text, images, video, and audio. A single end-to-end score cannot say where the evidence was lost, so the benchmark holds the question fixed and separates four stages: **write**, **retrieve**, **deliver**, and **read**.
 
 This repository is the evaluation code and the project page. It does not include the benchmark generator. The released set is the frozen 923-question collection.
