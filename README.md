@@ -7,7 +7,6 @@
 **Remember what was said, shown, and conveyed. Then find where the memory failed.**
 
 [![Paper](https://img.shields.io/badge/arXiv-2610.29249-b31b1b?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2610.29249)
-[![Reviews](https://img.shields.io/badge/OpenReview-Reviews-6b4fbb?style=for-the-badge)](https://openreview.net/forum?id=juBgXjNvg4)
 [![Dataset](https://img.shields.io/badge/Dataset-Hugging%20Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/datasets/gzone0111/MOSAIC)
 [![Project](https://img.shields.io/badge/Project-Page-7463b8?style=for-the-badge)](https://hkust-knowcomp.github.io/MOSAIC/)
 [![Leaderboard](https://img.shields.io/badge/Leaderboard-Submit-1d6b63?style=for-the-badge)](https://hkust-knowcomp.github.io/MOSAIC/#leaderboard)
