@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21",
+  "updated": "2026-11-06",
   "tracks": [
     {
       "id": "b",
@@ -16,6 +16,18 @@
         {"key": "latency", "label": "Latency (s)", "numeric": true, "digits": 1, "lower": true}
       ],
       "rows": [
+        {
+          "system": "SenseMem",
+          "memory": "Native multimodal",
+          "reader": "Qwen3.8-Omni-Flash",
+          "answerable": 0.777551,
+          "correct_refusal": 0.532374,
+          "false_refusal": 0.005102,
+          "latency": null,
+          "source": "submission",
+          "url": "https://github.com/SenseMem/SenseMem/blob/dd1dcf68d2d8e4dea171e33a19cff79b8fc78031/docs/benchmarks/mosaic-native.md",
+          "notes": "2026-11-06; all 923 questions across 70 personas. Embedding: google/embeddinggemma-2 (768 dimensions); reader reasoning_effort=none; judge: qwen3.7-plus, temperature=0, thinking disabled. Hybrid retrieval with recall_limit=32, recall_rounds=3, recall_max_queries=8, evidence_budget_chars=128000; lossless 16000-character text splitting. Native text/image/audio/video, without an auxiliary captioner, ASR, or reranker. Answerable-score 95% CI [0.755422, 0.800907] from 2000 persona-cluster bootstrap resamples, seed=0. Two reader requests returned data_inspection_failed and scored zero within the 784-answerable denominator."
+        },
         {"system": "ReAct", "memory": "Native multimodal", "reader": "MiMo-V2.5", "answerable": 0.732, "correct_refusal": 0.410, "false_refusal": 0.018, "latency": 73.6, "source": "paper"},
         {"system": "Naive RAG", "memory": "Native multimodal", "reader": "Gemini 3.5", "answerable": 0.687, "correct_refusal": 0.496, "false_refusal": 0.022, "latency": 31.2, "source": "paper"},
         {"system": "ReAct", "memory": "Native multimodal", "reader": "Gemini 3.5", "answerable": 0.674, "correct_refusal": 0.417, "false_refusal": 0.037, "latency": 46.4, "source": "paper"},
