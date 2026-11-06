@@ -45,9 +45,9 @@ Two comparisons use those stages. **Fixed reader** keeps Gemini 3.5 and changes 
 
 ## Leaderboard
 
-The [project page](https://hkust-knowcomp.github.io/MOSAIC/#leaderboard) lists the paper baselines.
+The [project page](https://hkust-knowcomp.github.io/MOSAIC/#leaderboard) lists the paper baselines and submitted results.
 
-- **End to end.** 12 systems on all 923 questions. The top answerable score is ReAct with native multimodal memory and MiMo-V2.5, at 0.732. Correct refusal and false refusal are reported beside it, because refusing everything is not a better memory.
+- **End to end.** 13 systems on all 923 questions. The top answerable score is [SenseMem](https://github.com/SenseMem/SenseMem/blob/dd1dcf68d2d8e4dea171e33a19cff79b8fc78031/docs/benchmarks/mosaic-native.md) with native multimodal memory and Qwen3.8-Omni-Flash, at 0.777551. Correct refusal and false refusal are reported beside it, because refusing everything is not a better memory.
 - **Fixed reader.** 7 backends on the 784 answerable questions. A-MEM on caption text leads, at 0.684.
 
 To add a result, open an issue with the [submission form](https://hkust-knowcomp.github.io/MOSAIC/#submit), or file one directly on this repository. Include the system, memory representation, reader, answerable score, and, for an end-to-end run, the correct-refusal and false-refusal rates, plus a link to the code or logs. A checked run is added as a row in [`docs/leaderboard.json`](docs/leaderboard.json).
