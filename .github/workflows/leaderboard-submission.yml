@@ -1,0 +1,33 @@
+name: Leaderboard submission
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check:
+    if: >
+      github.event_name == 'pull_request_target' ||
+      (github.event.issue.pull_request && github.event.comment.user.type != 'Bot')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the base repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Install the judge JSON repair parser
+        run: python -m pip install --disable-pip-version-check json_repair
+
+      - name: Recompute or ask for the prediction files
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
+        run: python evaluation/check_submission.py --from-pr "$PR_NUMBER" --repo "$GITHUB_REPOSITORY"
