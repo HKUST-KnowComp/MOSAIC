@@ -45,9 +45,9 @@ Two comparisons use those stages. **Fixed reader** keeps Gemini 3.5 and changes 
 
 ## Leaderboard
 
-The [project page](https://hkust-knowcomp.github.io/MOSAIC/#leaderboard) lists the paper baselines.
+The [project page](https://hkust-knowcomp.github.io/MOSAIC/#leaderboard) lists the paper baselines and submitted results.
 
-- **End to end.** 12 systems on all 923 questions. The top answerable score is ReAct with native multimodal memory and MiMo-V2.5, at 0.732. Correct refusal and false refusal are reported beside it, because refusing everything is not a better memory.
+- **End to end.** 13 systems on all 923 questions. The top answerable score is [SenseMem](https://github.com/SenseMem/SenseMem/blob/dd1dcf68d2d8e4dea171e33a19cff79b8fc78031/docs/benchmarks/mosaic-native.md) with native multimodal memory and Qwen3.8-Omni-Flash, at 0.778. Correct refusal and false refusal are reported beside it, because refusing everything is not a better memory.
 - **Fixed reader.** 7 backends on the 784 answerable questions. A-MEM on caption text leads, at 0.684.
 
 To add a result, open an issue with the [submission form](https://hkust-knowcomp.github.io/MOSAIC/#submit). Include the system, memory representation, reader, answerable score, and, for an end-to-end run, the correct-refusal and false-refusal rates. Also link the per-question predictions and raw judge outputs for all 923 questions, the aggregate result, and the resolved config with credentials removed. The judge is `qwen/qwen3.7-plus` at temperature 0 with thinking off, using [`evaluation/judge/eval_judge.py`](evaluation/judge/eval_judge.py). Refusal rates use the phrase list in [`evaluation/_common.py`](evaluation/_common.py). The files are used only to recompute the rates and are not republished. Maintainers add the checked row to [`docs/leaderboard.json`](docs/leaderboard.json).
