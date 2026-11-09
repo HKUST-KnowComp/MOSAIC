@@ -119,7 +119,7 @@
 
     <section id="leaderboard" class="panel" data-panel="leaderboard">
       <h2>Leaderboard</h2>
-      <p class="sub">Paper baselines only. A new row is added to <code>docs/leaderboard.json</code> after the run is checked against the 923-question set and the same judge.</p>
+      <p class="sub">Paper baselines only. A submitted row is added to <code>docs/leaderboard.json</code> after the per-question predictions and judge outputs are recomputed on the 923-question set with the paper’s judge.</p>
       <div class="boards">
         <input type="radio" name="board" id="board-b" checked>
         <input type="radio" name="board" id="board-a">
@@ -184,7 +184,7 @@
 
     <section id="submit" class="panel" data-panel="submit">
       <h2>Submit a result</h2>
-      <p class="sub">Use the released 923 questions and the paper’s judge. Report the answerable score, and for an end-to-end run also the correct-refusal and false-refusal rates. Accepted rows are written into the leaderboard file.</p>
+      <p class="sub">Use the released 923 questions and the paper’s judge, <code>qwen/qwen3.7-plus</code>, temperature 0, thinking off, from <code>evaluation/judge/eval_judge.py</code>. Report the answerable score, and for an end-to-end run the correct-refusal and false-refusal rates. Link the per-question predictions and raw judge outputs. The row is added after those outputs are recomputed.</p>
       <form id="submit-form">
         <label>System name<input name="system" required placeholder="e.g. Naive RAG"></label>
         <label>Track
@@ -205,11 +205,11 @@
         <label>Answerable score<input name="score" required inputmode="decimal" placeholder="0.000"></label>
         <label>Correct refusal<input name="correct" inputmode="decimal" placeholder="0.000, end-to-end runs"></label>
         <label>False refusal<input name="false_refusal" inputmode="decimal" placeholder="0.000, end-to-end runs"></label>
-        <label>Code or log URL<input name="url" type="url" placeholder="https://"></label>
-        <label>Notes<textarea name="notes" rows="4" placeholder="Retrieval budget, what was delivered, and any confidence interval."></textarea></label>
+        <label>Predictions URL<input name="url" type="url" required placeholder="https:// link to the per-question file"></label>
+        <label>Notes<textarea name="notes" rows="4" placeholder="Retrieval budget, what was delivered, confidence interval, and links to the aggregate result and config."></textarea></label>
         <button type="submit">Open a GitHub issue</button>
       </form>
-      <p class="fine">The issue is filed on <a href="https://github.com/HKUST-KnowComp/MOSAIC">HKUST-KnowComp/MOSAIC</a>. Include enough detail for someone else to rerun the number.</p>
+      <p class="fine">The issue is filed on <a href="https://github.com/HKUST-KnowComp/MOSAIC">HKUST-KnowComp/MOSAIC</a>. Link the per-question file for all 923 questions, the aggregate result, and the resolved config with credentials removed. Refusal rates use the phrase list in <code>evaluation/_common.py</code>. The files are used only to recompute the row and are not republished.</p>
     </section>
   </main>
 
@@ -217,6 +217,6 @@
     <p>Hong Ting Tsang, Boyi Zhang, Haoyu Huang, Jiaxin Bai, Yufei Li, Yisen Gao, Zhongwei Xie, Hongyu Luo, Jeff Z. Pan, Yangqiu Song</p>
     <p>HKUST KnowComp · University of Edinburgh</p>
   </footer>
-  <script src="site.js?v=3"></script>
+  <script src="site.js?v=4"></script>
 </body>
 </html>

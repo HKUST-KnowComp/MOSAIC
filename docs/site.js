@@ -29,11 +29,16 @@ document.getElementById("submit-form").addEventListener("submit", (event) => {
     `- Answerable score: ${data.get("score")}`,
     `- Correct refusal: ${data.get("correct") || "n/a"}`,
     `- False refusal: ${data.get("false_refusal") || "n/a"}`,
-    `- URL: ${data.get("url") || "n/a"}`,
+    `- Predictions URL: ${data.get("url") || "n/a"}`,
+    "",
+    "### Required files",
+    "- Per-question predictions and raw judge outputs for all 923 questions",
+    "- Aggregate result file",
+    "- Resolved config with credentials removed",
     "",
     String(data.get("notes") || ""),
     "",
-    "After a check, add the row to `docs/leaderboard.json`.",
+    "Maintainers recompute the rates with `evaluation/judge/eval_judge.py` and the refusal phrases in `evaluation/_common.py`, then add the row to `docs/leaderboard.json`. The files are used only for that check and are not republished.",
   ].join("\n");
   const url = new URL("https://github.com/HKUST-KnowComp/MOSAIC/issues/new");
   url.searchParams.set("title", `Result submission: ${data.get("system")}`);

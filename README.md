@@ -50,7 +50,7 @@ The [project page](https://hkust-knowcomp.github.io/MOSAIC/#leaderboard) lists t
 - **End to end.** 12 systems on all 923 questions. The top answerable score is ReAct with native multimodal memory and MiMo-V2.5, at 0.732. Correct refusal and false refusal are reported beside it, because refusing everything is not a better memory.
 - **Fixed reader.** 7 backends on the 784 answerable questions. A-MEM on caption text leads, at 0.684.
 
-To add a result, open an issue with the [submission form](https://hkust-knowcomp.github.io/MOSAIC/#submit), or file one directly on this repository. Include the system, memory representation, reader, answerable score, and, for an end-to-end run, the correct-refusal and false-refusal rates, plus a link to the code or logs. A checked run is added as a row in [`docs/leaderboard.json`](docs/leaderboard.json).
+To add a result, open an issue with the [submission form](https://hkust-knowcomp.github.io/MOSAIC/#submit). Include the system, memory representation, reader, answerable score, and, for an end-to-end run, the correct-refusal and false-refusal rates. Also link the per-question predictions and raw judge outputs for all 923 questions, the aggregate result, and the resolved config with credentials removed. The judge is `qwen/qwen3.7-plus` at temperature 0 with thinking off, using [`evaluation/judge/eval_judge.py`](evaluation/judge/eval_judge.py). Refusal rates use the phrase list in [`evaluation/_common.py`](evaluation/_common.py). The files are used only to recompute the rates and are not republished. Maintainers add the checked row to [`docs/leaderboard.json`](docs/leaderboard.json).
 
 ## Dataset
 
